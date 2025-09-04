@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# ParaCLEAN
-Parallel Corpus LanguagE Alignment and Normalisation
-=======
-
 # ParaCLEAN
 
 Parallel Corpus LanguagE Alignment and Normalisation
@@ -39,4 +34,4 @@ The pipeline works in two steps:
 - **Step 2:**
   
   python sampling/sampler.py /gpfs/projects/bsc88/data/03-mt-repository/pangeanic-clean_ca-en_20230830/pangeanic-clean_ca-en_20230830.scored --l1 ca --l2 en --sample_output_path /gpfs/projects/bsc88/data/04-mt-samplings/mt-aina-pangeanic-clean_ca-en_1.0
->>>>>>> ac4a44b (Initial commit)
+
