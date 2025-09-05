@@ -50,7 +50,7 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, model="labse"):
 		print(f"[pipeline] Reformatted TSV written to: {formatted_path}")
 
 	if "embeddings" in steps:
-		
+		current_path= output_path + ".formatted.tsv"
 		embedding_model = load_embedding_model(model)
 		embeddings_output = output_path + ".embeddings.tsv"
 		print(f"[pipeline] Computing embeddings with {model}")
@@ -64,15 +64,18 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, model="labse"):
 		print(f"[pipeline] Running language ID")
 		data = langid.score(current_path, langid_output, l1, l2)
 
+	if "dedup" in steps:
+		current_path = output_path + ".langid.tsv"
+		deduped_path = output_path + ".deduped.tsv"
+		deduplicate_tsv(current_path, deduped_path)
+		current_path = deduped_path
+		print(f"[pipeline] Deduplicated TSV written to: {deduped_path}")
+
+
 	# Step: filtering
 	if "filter" in steps:
 		print(f"[pipeline] Filtering")
 		data = filtering.apply_filters(data)
-
-	# Step: deduplication
-	if "dedup" in steps:
-		print(f"[pipeline] Deduplicating")
-		data = deduplication.remove_duplicates(data)
 
 	# Step: normalization
 	if "normalize" in steps:
