@@ -1,6 +1,6 @@
 # pipeline.py
 import argparse
-from steps import input_formats, embeddings, langid, filtering, deduplication
+from steps import input_formats, embeddings, langid, filtering, deduplicate
 
 def load_embedding_model(name):
 	"""
@@ -67,10 +67,9 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, model="labse"):
 	if "dedup" in steps:
 		current_path = output_path + ".langid.tsv"
 		deduped_path = output_path + ".deduped.tsv"
-		deduplicate_tsv(current_path, deduped_path)
+		data = deduplicate.deduplicate_tsv(current_path, deduped_path)
 		current_path = deduped_path
 		print(f"[pipeline] Deduplicated TSV written to: {deduped_path}")
-
 
 	# Step: filtering
 	if "filter" in steps:
