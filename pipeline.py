@@ -23,7 +23,7 @@ def load_embedding_model(name):
 	else:
 		raise ValueError(f"Unsupported embedding model: {name}")
 
-def run_pipeline(input_path, output_path, steps, l1, l2, format, model="labse"):
+def run_pipeline(input_path, output_path, steps, l1, l2, format, filter_config=None, model="labse"):
 	"""
 	Run the full pipeline or selected steps.
 	"""
@@ -68,13 +68,16 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, model="labse"):
 		current_path = output_path + ".langid.tsv"
 		deduped_path = output_path + ".deduped.tsv"
 		data = deduplicate.deduplicate_tsv(current_path, deduped_path)
-		current_path = deduped_path
 		print(f"[pipeline] Deduplicated TSV written to: {deduped_path}")
 
-	# Step: filtering
 	if "filter" in steps:
-		print(f"[pipeline] Filtering")
-		data = filtering.apply_filters(data)
+		print(f"[pipeline] Applying filters")
+		filter_config = filtering.load_filter_config(filter_config)
+		current_path = output_path + ".deduped.tsv"
+		filtered_path = output_path + ".filtered.tsv"
+		filtering.apply_filters(current_path, filtered_path, filter_config)
+		print(f"[pipeline] Filtered TSV written to: {filtered_path}")
+
 
 	# Step: normalization
 	if "normalize" in steps:
@@ -99,11 +102,21 @@ def main():
 	parser.add_argument("--l2", required=True, help="Target language code")
 	parser.add_argument("--format",default="tsv")
 	parser.add_argument("--model", default="labse", help="Embedding model to use (labse, comet, sonar...)")
+	parser.add_argument("--filter_config", type=str, default=None, help="Path to JSON file specifying filtering thresholds (alignment, langid, etc.)"
+)
 
 	args = parser.parse_args()
 	steps = [s.strip() for s in args.steps.split(",")]
 
-	run_pipeline(args.input, args.output, steps, args.l1, args.l2, args.format, model=args.model)
+	run_pipeline(
+		args.input, 
+		args.output, 
+		steps, 
+		args.l1, 
+		args.l2, 
+		args.format, 
+		args.filter_config, 
+		model=args.model)
 
 
 if __name__ == "__main__":
