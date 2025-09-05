@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --job-name=sample-mt-pipe
+#SBATCH --output=slurm_logs/sample-mt-pipe_%j.out
+#SBATCH --error=slurm_logs/sample-mt-pipe_%j.err
+#SBATCH --gres=gpu:1
+#SBATCH --time=1:00:00
+#SBATCH --cpus-per-task=20
+#SBATCH --qos acc_bscls
+#SBATCH -N1
+#SBATCH --account bsc88
+##SBATCH --qos=acc_bscls
+
+paste en-fr_149M.fr en-fr_149M.en > en-fr_149M.fr-en
+
+shuf -n 100000000 en-fr_149M.fr-en > en-fr_100M.fr-en
+
+awk -F '\t' '{print $1}' en-fr_100M.fr-en > en-fr_100M.fr
+awk -F '\t' '{print $2}' en-fr_100M.fr-en > en-fr_100M.en
