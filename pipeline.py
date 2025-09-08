@@ -1,6 +1,6 @@
 # pipeline.py
 import argparse
-from steps import input_formats, embeddings, langid, filtering, deduplicate
+from steps import input_formats, embeddings, langid, filtering, deduplicate, normalisation
 
 def load_embedding_model(name):
 	"""
@@ -80,14 +80,11 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, filter_config=N
 
 
 	# Step: normalization
-	if "normalize" in steps:
-		print(f"[pipeline] Normalizing")
-		data = normalization.apply_normalization(data, l1, l2)
-
-	# Step: output writing
-	if "output" in steps:
-		print(f"[pipeline] Writing output to {output_path}")
-		input_formats.save(data, output_path)
+	if "normalise" in steps:
+		current_path = output_path + ".filtered.tsv"
+		output_path = output_path + ".normalised.tsv"
+		print(f"[pipeline] Normalising")
+		data = normalisation.apply_normalisation(current_path, output_path, l1, l2)
 
 	return data
 
@@ -96,13 +93,13 @@ def main():
 	parser = argparse.ArgumentParser(description="Run the data cleaning pipeline.")
 	parser.add_argument("--input", help="Path to input file", nargs = '+')
 	parser.add_argument("--output", required=True, help="Path to save results")
-	parser.add_argument("--steps", default="input,embeddings,langid,filter,dedup,normalize,output",
+	parser.add_argument("--steps", default="input,embeddings,langid,filter,dedup,normalise,output",
 						help="Comma-separated list of steps to run")
 	parser.add_argument("--l1", required=True, help="Source language code")
 	parser.add_argument("--l2", required=True, help="Target language code")
 	parser.add_argument("--format",default="tsv")
 	parser.add_argument("--model", default="labse", help="Embedding model to use (labse, comet, sonar...)")
-	parser.add_argument("--filter_config", type=str, default=None, help="Path to JSON file specifying filtering thresholds (alignment, langid, etc.)"
+	parser.add_argument("--filter_config", type=str, default="filter_config.json", help="Path to JSON file specifying filtering thresholds (alignment, langid, etc.)"
 )
 
 	args = parser.parse_args()
