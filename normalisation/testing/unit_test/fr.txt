@@ -1,0 +1,41 @@
+Il fait beau aujourd'hui. Rendez-vous demain à 21h à la gare !
+Je veux parler de Python et d'IA.
+Avez-vous lu « Demon Slayer » ?
+L'adresse e-mail est : example@test.com
+Je vais au cinéma avec des amis samedi prochain.
+Les Jeux olympiques de Tokyo 2020 ont été impressionnants.
+Le café de ce café est très bon.
+Le numéro de téléphone de Johan est le 090-1234-5678.
+Il est facile de prendre le train pour Osaka.
+« Les Émigrants » est un classique de la littérature suédoise.
+Envoyez un message via LINE.
+Hier, j'ai acheté 3 pommes au supermarché.
+Plus d'informations sur https://www.example.no.
+L'adresse est Västra Gatan 28-29, Stockholm.
+La ville compte plus de 100 000 habitants.
+L'épaisseur de la pièce est de 1,4 mm.
+Les ventes de cette année ont augmenté de 12,5 % par rapport à l'année précédente.
+Le prix du produit est de 3 280 £.
+La date limite de soumission est le 01/09/2025.
+La réunion commence à 14h30.
+Le titre du film est « Your Name. (Your Name) ».
+Aujourd'hui, je suis vraiment fatigué… mais c'était amusant !
+J'ai posté les photos de #StockholmTravels sur Instagram.
+Il travaille chez (AB) Test Company.
+La version de l'application est la v2.3.1.
+Aujourd'hui, je suis vraiment fatigué… mais c'était amusant !
+L'avez-vous fait… ? Sérieusement ?
+Waouh… !! C'est incroyable !
+Python… ! Je l'ai étudié aujourd'hui.
+L'IA… ? Est-ce que ça marchera vraiment ?
+Toi, moi et tout le reste, qu'en pensez-vous ?
+https://example.com/path?x=1&y=2
+http://openai.com
+ftp://mirror.server.net/file.tar.gz
+mailto:someone@example.com
+file:/home/user/data.txt
+C:\Users\Audrey\Documents
+std::vector<int>
+Je ne sais pas quoi dire :-) mais ça me fait rire.
+Tout va bien :-P ne t'inquiète pas.
+On se voit demain :D ça va être génial !

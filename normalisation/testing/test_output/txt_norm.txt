@@ -1,0 +1,29 @@
+########
+Contents
+########
+
+Compilation of corpora sourced from Opus for the Spanish-Asturian language pair (es-ast):
+Source datasets:
+gnome_es-ast_20240423
+kde4_es-ast_20240423
+nllb_es-ast_20240423
+tatoeba_es-ast_20240423
+ubuntu_es-ast_20240423
+wikimedia_es-ast_20240423
+
+
+######################
+Additional Information
+######################
+
+The data in this folder has been filtered by:
+Labse alignment score >= 0.75
+Lingua probability score for Spanish >= 0.5
+
+No language identifier and hence no threshold has been applied for the Asturian language.
+
+#################
+Contact person/s
+#################
+
+Francesca - fdelucaf@bsc.es
