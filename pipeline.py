@@ -1,29 +1,76 @@
 # pipeline.py
 import argparse
+import json
+import os
 from steps import input_formats, embeddings, langid, filtering, deduplicate, normalisation
 
-def load_embedding_model(name):
+def run_pipeline_from_config(config):
+	"""
+	Run pipeline using a config dictionary.
+	"""
+	return run_pipeline(
+		input_path=config.get("input"),
+		output_path=config.get("output"),
+		steps=config.get("steps"),
+		l1=config.get("l1"),
+		l2=config.get("l2"),
+		format=config.get("format", "tsv"),
+		alignment=config.get("alignment_score"),
+		langid_l1=config.get("langid_l1_prob"),
+		langid_l2=config.get("langid_l2_prob"),
+		model=config.get("model", "labse"),
+		model_path=config.get("model_path")
+	)
+
+def load_embedding_model(name, model_path=None):
 	"""
 	Factory for loading embedding models.
 	Extend this as new models are supported.
 	"""
 	if name == "labse":
-		from sentence_transformers import SentenceTransformer
 		print("[pipeline] Loading LaBSE model...")
-		return SentenceTransformer("***REMOVED***/labse_model")
+		from sentence_transformers import SentenceTransformer
+		# If a local path is provided, use it
+		if model_path is not None:
+			return SentenceTransformer(model_path)
+		else:
+			# Otherwise, use Hugging Face model name to auto-download
+			hf_model_name = "sentence-transformers/LaBSE"
+			cache_dir = os.path.expanduser("~/.cache/my_pipeline_models")
+			return SentenceTransformer(hf_model_name, cache_folder=cache_dir)
 
 	elif name == "comet":
 		# placeholder, you can add COMET model loading here
 		raise NotImplementedError("COMET embeddings not yet supported")
 
 	elif name == "sonar":
-		# placeholder
-		raise NotImplementedError("SONAR embeddings not yet supported")
+		# SONAR models need to be downloaded manually
+		if model_path is None:
+			raise ValueError(
+				"SONAR embeddings requested, but no model_path provided. "
+				"Please download SONAR from FAIR / Hugging Face and provide the local path."
+			)
+		from sentence_transformers import SentenceTransformer
+		print(f"[pipeline] Loading SONAR model from {model_path}")
+		return SentenceTransformer(model_path)
 
 	else:
 		raise ValueError(f"Unsupported embedding model: {name}")
 
-def run_pipeline(input_path, output_path, steps, l1, l2, format, filter_config=None, model="labse"):
+def run_pipeline(
+	input_path, 
+	output_path, 
+	steps, 
+	l1, 
+	l2, 
+	format, 
+	filter_config=None,
+	model="labse",
+	model_path=None,
+	alignment=None,
+	langid_l1=None,
+	langid_l2=None
+	):
 	"""
 	Run the full pipeline or selected steps.
 	"""
@@ -72,10 +119,9 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, filter_config=N
 
 	if "filter" in steps:
 		print(f"[pipeline] Applying filters")
-		filter_config = filtering.load_filter_config(filter_config)
 		current_path = output_path + ".deduped.tsv"
 		filtered_path = output_path + ".filtered.tsv"
-		filtering.apply_filters(current_path, filtered_path, filter_config)
+		filtering.apply_filters(current_path, filtered_path, alignment, langid_l1, langid_l2)
 		print(f"[pipeline] Filtered TSV written to: {filtered_path}")
 
 
@@ -91,30 +137,15 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format, filter_config=N
 
 def main():
 	parser = argparse.ArgumentParser(description="Run the data cleaning pipeline.")
-	parser.add_argument("--input", help="Path to input file", nargs = '+')
-	parser.add_argument("--output", required=True, help="Path to save results")
-	parser.add_argument("--steps", default="input,embeddings,langid,filter,dedup,normalise,output",
-						help="Comma-separated list of steps to run")
-	parser.add_argument("--l1", required=True, help="Source language code")
-	parser.add_argument("--l2", required=True, help="Target language code")
-	parser.add_argument("--format",default="tsv")
-	parser.add_argument("--model", default="labse", help="Embedding model to use (labse, comet, sonar...)")
-	parser.add_argument("--filter_config", type=str, default="filter_config.json", help="Path to JSON file specifying filtering thresholds (alignment, langid, etc.)"
-)
-
+	parser.add_argument("--config", type=str, help="Path to JSON config file with pipeline arguments")
 	args = parser.parse_args()
-	steps = [s.strip() for s in args.steps.split(",")]
 
-	run_pipeline(
-		args.input, 
-		args.output, 
-		steps, 
-		args.l1, 
-		args.l2, 
-		args.format, 
-		args.filter_config, 
-		model=args.model)
-
+	if args.config:
+		with open(args.config, "r", encoding="utf-8") as f:
+			config = json.load(f)
+		run_pipeline_from_config(config)
+	else:
+		parser.error("You must provide a --config JSON file")
 
 if __name__ == "__main__":
 	main()

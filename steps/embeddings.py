@@ -152,6 +152,7 @@
 import os
 import numpy as np
 from sentence_transformers import SentenceTransformer
+import csv
 
 def load_model(model_path=None):
 	if model_path is None:
@@ -160,9 +161,7 @@ def load_model(model_path=None):
 	print(f"[embeddings] Loading model from {model_path}")
 	return SentenceTransformer(model_path)
 
-import csv
-import numpy as np
-from sentence_transformers import SentenceTransformer
+
 
 def add_embeddings(tsv_path, output_path, model):
     """
