@@ -69,16 +69,31 @@ def load_embedding_model(name, model_path=None):
 		# placeholder, you can add COMET model loading here
 		raise NotImplementedError("COMET embeddings not yet supported")
 
+
 	elif name == "sonar":
-		# SONAR models need to be downloaded manually
-		if model_path is None:
-			raise ValueError(
-				"SONAR embeddings requested, but no model_path provided. "
-				"Please download SONAR from FAIR / Hugging Face and provide the local path."
+		try:
+			import torch
+			from sonar.inference_pipelines.text import TextToEmbeddingModelPipeline
+		except ImportError:
+			raise ImportError(
+				"SONAR requested but not installed. "
+				"Install with `pip install sonar-space` and the correct fairseq2 build."
 			)
-		from sentence_transformers import SentenceTransformer
-		print(f"[pipeline] Loading SONAR model from {model_path}")
-		return SentenceTransformer(model_path)
+		class SonarAdapter:
+			def __init__(self, device=device, dtype=dtype):
+				self.model = TextToEmbeddingModelPipeline(
+					encoder="text_sonar_basic_encoder",
+					tokenizer="text_sonar_basic_encoder",
+					device=device or torch.device("cpu"),
+					dtype=dtype or torch.float32,
+				)
+
+			def encode(self, sentences, source_lang="eng_Latn"):
+				embs = self.model.predict(sentences, source_lang=source_lang)
+				return embs.cpu().numpy()  # match SentenceTransformer return type
+
+		print("[pipeline] Loading SONAR text embedding model...")
+		return SonarAdapter()
 
 	else:
 		raise ValueError(f"Unsupported embedding model: {name}")

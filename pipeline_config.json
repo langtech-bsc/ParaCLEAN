@@ -3,19 +3,19 @@
 	{
 	  "name": "TED2020",
 	  "type": "plain_text",
-	  "paths": ["/gpfs/projects/bsc88/data/01-raw-collections/ted2020_ca-zh_20230808/TED2020.ca-zh.ca", "/gpfs/projects/bsc88/data/01-raw-collections/ted2020_ca-zh_20230808/TED2020.ca-zh.zh"]
+	  "paths": ["testing/original_corpora/TED2020.ca-zh.ca", "testing/original_corpora/TED2020.ca-zh.zh"]
 	}, 
 	{
 	  "name": "QED", 
 	  "type": "plain_text", 
-	  "paths": ["/gpfs/projects/bsc88/data/01-raw-collections/qed_ca-zh_20230808/QED.ca-zh.ca", "/gpfs/projects/bsc88/data/01-raw-collections/qed_ca-zh_20230808/QED.ca-zh.zh"] 
+	  "paths": ["/testing/original_corpora/QED.ca-zh.ca", "testing/original_corpora/QED.ca-zh.zh"] 
 	}],
   "output": "testing/multi",
   "steps": ["input","embeddings"],
   "l1": "ca",
   "l2": "eu",
   "format": "plain_text",
-  "model": "labse",
+  "model": "sonar",
   "model_path": "***REMOVED***/labse_model",
   "alignment_score": 0.5,    
   "langid_l1_prob": 0.75,     
