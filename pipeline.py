@@ -8,19 +8,45 @@ def run_pipeline_from_config(config):
 	"""
 	Run pipeline using a config dictionary.
 	"""
-	return run_pipeline(
-		input_path=config.get("input"),
-		output_path=config.get("output"),
-		steps=config.get("steps"),
-		l1=config.get("l1"),
-		l2=config.get("l2"),
-		format=config.get("format", "tsv"),
-		alignment=config.get("alignment_score"),
-		langid_l1=config.get("langid_l1_prob"),
-		langid_l2=config.get("langid_l2_prob"),
-		model=config.get("model", "labse"),
-		model_path=config.get("model_path")
-	)
+	inputs = config.get("inputs")
+	if inputs:
+		out_dir=config.get("output")
+		if out_dir is None:
+			raise ValueError("Config must include an 'output' directory")
+		os.makedirs(out_dir, exist_ok=True)
+		results = {}
+		for inp in inputs:
+			name = inp["name"]
+			print(f"[pipeline] Processing input set: {name}")
+			result = run_pipeline(
+				input_path=inp["paths"],
+				output_path = os.path.join(out_dir, name),
+				steps=config.get("steps"),
+				l1=config.get("l1"),
+				l2=config.get("l2"),
+				format=inp.get("type", config.get("format", "plain_text")),
+				alignment=config.get("alignment_score"),
+				langid_l1=config.get("langid_l1_prob"),
+				langid_l2=config.get("langid_l2_prob"),
+				model=config.get("model", "labse"),
+				model_path=config.get("model_path")
+			)
+			results[name] = result
+		return results
+	else:
+		# fallback to single-input config
+		return run_pipeline(
+			input_path=config.get("input"),
+			output_path=config.get("output"),
+			l1=config.get("l1"),
+			l2=config.get("l2"),
+			format=config.get("format", "plain_text"),
+			alignment=config.get("alignment_score"),
+			langid_l1=config.get("langid_l1_prob"),
+			langid_l2=config.get("langid_l2_prob"),
+			model=config.get("model", "labse"),
+			model_path=config.get("model_path")
+		)
 
 def load_embedding_model(name, model_path=None):
 	"""
@@ -56,6 +82,7 @@ def load_embedding_model(name, model_path=None):
 
 	else:
 		raise ValueError(f"Unsupported embedding model: {name}")
+
 
 def run_pipeline(
 	input_path, 
