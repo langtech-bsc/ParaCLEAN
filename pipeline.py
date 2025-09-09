@@ -48,55 +48,60 @@ def run_pipeline_from_config(config):
 			model_path=config.get("model_path")
 		)
 
-def load_embedding_model(name, model_path=None):
-	"""
-	Factory for loading embedding models.
-	Extend this as new models are supported.
-	"""
-	if name == "labse":
-		print("[pipeline] Loading LaBSE model...")
-		from sentence_transformers import SentenceTransformer
-		# If a local path is provided, use it
-		if model_path is not None:
-			return SentenceTransformer(model_path)
-		else:
-			# Otherwise, use Hugging Face model name to auto-download
-			hf_model_name = "sentence-transformers/LaBSE"
-			cache_dir = os.path.expanduser("~/.cache/my_pipeline_models")
-			return SentenceTransformer(hf_model_name, cache_folder=cache_dir)
+# def load_embedding_model(name, model_path=None):
+# 	"""
+# 	Factory for loading embedding models.
+# 	Extend this as new models are supported.
+# 	"""
+# 	if name == "labse":
+# 		print("[pipeline] Loading LaBSE model...")
+# 		from sentence_transformers import SentenceTransformer
+# 		# If a local path is provided, use it
+# 		if model_path is not None:
+# 			return SentenceTransformer(model_path)
+# 		else:
+# 			# Otherwise, use Hugging Face model name to auto-download
+# 			hf_model_name = "sentence-transformers/LaBSE"
+# 			cache_dir = os.path.expanduser("~/.cache/my_pipeline_models")
+# 			return SentenceTransformer(hf_model_name, cache_folder=cache_dir)
 
-	elif name == "comet":
-		# placeholder, you can add COMET model loading here
-		raise NotImplementedError("COMET embeddings not yet supported")
+# 	elif name == "comet":
+# 		# placeholder, you can add COMET model loading here
+# 		raise NotImplementedError("COMET embeddings not yet supported")
 
 
-	elif name == "sonar":
-		try:
-			import torch
-			from sonar.inference_pipelines.text import TextToEmbeddingModelPipeline
-		except ImportError:
-			raise ImportError(
-				"SONAR requested but not installed. "
-				"Install with `pip install sonar-space` and the correct fairseq2 build."
-			)
-		class SonarAdapter:
-			def __init__(self, device=device, dtype=dtype):
-				self.model = TextToEmbeddingModelPipeline(
-					encoder="text_sonar_basic_encoder",
-					tokenizer="text_sonar_basic_encoder",
-					device=device or torch.device("cpu"),
-					dtype=dtype or torch.float32,
-				)
+# 	elif name == "sonar":
+# 		try:
+# 			import torch
+# 			from sonar.inference_pipelines.text import TextToEmbeddingModelPipeline
+# 		except ImportError:
+# 			raise ImportError(
+# 				"SONAR requested but not installed. "
+# 				"Install with `pip install sonar-space` and the correct fairseq2 build."
+# 			)
 
-			def encode(self, sentences, source_lang="eng_Latn"):
-				embs = self.model.predict(sentences, source_lang=source_lang)
-				return embs.cpu().numpy()  # match SentenceTransformer return type
+# 		class SonarAdapter:
+# 			def __init__(self, device=None, dtype=None):
+# 				self.model = TextToEmbeddingModelPipeline(
+# 					encoder="text_sonar_basic_encoder",
+# 					tokenizer="text_sonar_basic_encoder",
+# 					device=device or torch.device("cpu"),
+# 					dtype=dtype or torch.float32,
+# 				)
 
-		print("[pipeline] Loading SONAR text embedding model...")
-		return SonarAdapter()
+# 			def encode(self, sentences, lang="en"):
+# 				flores_code = get_flores_code(lang)
+# 				embs = self.model.predict(sentences, source_lang=flores_code)
+# 				return embs.cpu().numpy()  # match SentenceTransformer return type
 
-	else:
-		raise ValueError(f"Unsupported embedding model: {name}")
+# 		print("[pipeline] Loading SONAR text embedding model...")
+# 		return SonarAdapter()
+
+# 	else:
+# 		raise ValueError(f"Unsupported embedding model: {name}")
+
+# 	else:
+# 		raise ValueError(f"Unsupported embedding model: {name}")
 
 
 def run_pipeline(
@@ -140,10 +145,11 @@ def run_pipeline(
 
 	if "embeddings" in steps:
 		current_path= output_path + ".formatted.tsv"
-		embedding_model = load_embedding_model(model)
+		embedding_model = embeddings.load_embedding_model(model, model_path=model_path)
 		embeddings_output = output_path + ".embeddings.tsv"
 		print(f"[pipeline] Computing embeddings with {model}")
-		embeddings.add_embeddings(current_path, embeddings_output, model=embedding_model)
+		embeddings.add_embeddings(current_path, embeddings_output, model=embedding_model,
+							  l1=l1, l2=l2)
 		
 
 	# Step: language ID

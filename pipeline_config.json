@@ -13,10 +13,9 @@
   "output": "testing/multi",
   "steps": ["input","embeddings"],
   "l1": "ca",
-  "l2": "eu",
+  "l2": "zh",
   "format": "plain_text",
   "model": "sonar",
-  "model_path": "***REMOVED***/labse_model",
   "alignment_score": 0.5,    
   "langid_l1_prob": 0.75,     
   "langid_l2_prob": 0.75     
