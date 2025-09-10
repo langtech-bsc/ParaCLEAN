@@ -8,6 +8,7 @@ vecalign/
 # Customized folders
 tmp/
 slurm_logs
+testing
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

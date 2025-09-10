@@ -1,0 +1,22 @@
+{
+  "inputs": [
+	{
+	  "name": "TED2020",
+	  "type": "plain_text",
+	  "paths": ["testing/original_corpora/TED2020.ca-zh.ca", "testing/original_corpora/TED2020.ca-zh.zh"]
+	}, 
+	{
+	  "name": "QED", 
+	  "type": "plain_text", 
+	  "paths": ["/testing/original_corpora/QED.ca-zh.ca", "testing/original_corpora/QED.ca-zh.zh"] 
+	}],
+  "output": "testing/multi",
+  "steps": ["input","embeddings"],
+  "l1": "ca",
+  "l2": "zh",
+  "format": "plain_text",
+  "model": "sonar",
+  "alignment_score": 0.5,    
+  "langid_l1_prob": 0.75,     
+  "langid_l2_prob": 0.75     
+}

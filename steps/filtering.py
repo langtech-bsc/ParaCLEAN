@@ -2,20 +2,11 @@
 import csv
 import json
 
-def load_filter_config(config_path):
-    """Load JSON config for filtering thresholds."""
-    with open(config_path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-def apply_filters(input_path, output_path, config):
+def apply_filters(input_path, output_path, alignment_thresh, langid_l1_thresh, langid_l2_thresh):
     """
     Stream TSV file, apply filters, and write passing rows to output.
     Only considers first two columns for language/text filters; can be extended.
     """
-    alignment_thresh = config.get("alignment_score", 0.0)
-    langid_l1_thresh = config.get("langid_l1_prob", 0.0)
-    langid_l2_thresh = config.get("langid_l2_prob", 0.0)
-    max_length_diff = config.get("max_length_diff", None)
 
     with open(input_path, "r", encoding="utf-8") as infile, \
          open(output_path, "w", encoding="utf-8") as outfile:

@@ -1,0 +1,62 @@
+ISO639_3_SCRIPT_TO_ISO639_1 = {
+    'ace_Arab': 'ace-Arab', 'ace_Latn': 'ace-Latn', 'acm_Arab': 'acm', 'acq_Arab': 'acq',
+    'aeb_Arab': 'aeb', 'afr_Latn': 'af', 'ajp_Arab': 'ajp', 'aka_Latn': 'ak',
+    'amh_Ethi': 'am', 'apc_Arab': 'apc', 'arb_Arab': 'ar', 'arb_Latn': 'ar-Latn',
+    'ars_Arab': 'ars', 'ary_Arab': 'ary', 'arz_Arab': 'arz', 'asm_Beng': 'as',
+    'ast_Latn': 'ast', 'awa_Deva': 'awa', 'ayr_Latn': 'ayr', 'azb_Arab': 'az-Arab',
+    'azj_Latn': 'az', 'bak_Cyrl': 'ba', 'bam_Latn': 'bm', 'ban_Latn': 'ban',
+    'bel_Cyrl': 'be', 'bem_Latn': 'bem', 'ben_Beng': 'bn', 'bho_Deva': 'bho',
+    'bjn_Arab': 'bjn-Arab', 'bjn_Latn': 'bjn-Latn', 'bod_Tibt': 'bo', 'bos_Latn': 'bs',
+    'bug_Latn': 'bug', 'bul_Cyrl': 'bg', 'cat_Latn': 'ca', 'ceb_Latn': 'ceb',
+    'ces_Latn': 'cs', 'cjk_Latn': 'cjk', 'ckb_Arab': 'ckb', 'crh_Latn': 'crh',
+    'cym_Latn': 'cy', 'dan_Latn': 'da', 'deu_Latn': 'de', 'dik_Latn': 'dik',
+    'dyu_Latn': 'dyu', 'dzo_Tibt': 'dz', 'ell_Grek': 'el', 'eng_Latn': 'en',
+    'epo_Latn': 'eo', 'est_Latn': 'et', 'eus_Latn': 'eu', 'ewe_Latn': 'ee',
+    'fao_Latn': 'fo', 'fij_Latn': 'fj', 'fin_Latn': 'fi', 'fon_Latn': 'fon',
+    'fra_Latn': 'fr', 'fur_Latn': 'fur', 'fuv_Latn': 'fuv', 'gla_Latn': 'gd',
+    'gle_Latn': 'ga', 'glg_Latn': 'gl', 'grn_Latn': 'gn', 'guj_Gujr': 'gu',
+    'hat_Latn': 'ht', 'hau_Latn': 'ha', 'heb_Hebr': 'he', 'hin_Deva': 'hi',
+    'hne_Deva': 'hne', 'hrv_Latn': 'hr', 'hun_Latn': 'hu', 'hye_Armn': 'hy',
+    'ibo_Latn': 'ig', 'ilo_Latn': 'ilo', 'ind_Latn': 'id', 'isl_Latn': 'is',
+    'ita_Latn': 'it', 'jav_Latn': 'jv', 'jpn_Jpan': 'ja', 'kab_Latn': 'kab',
+    'kac_Latn': 'kac', 'kam_Latn': 'kam', 'kan_Knda': 'kn', 'kas_Arab': 'ks-Arab',
+    'kas_Deva': 'ks-Deva', 'kat_Geor': 'ka', 'knc_Arab': 'knc-Arab', 'knc_Latn': 'knc-Latn',
+    'kaz_Cyrl': 'kk', 'kbp_Latn': 'kbp', 'kea_Latn': 'kea', 'khm_Khmr': 'km',
+    'kik_Latn': 'ki', 'kin_Latn': 'rw', 'kir_Cyrl': 'ky', 'kmb_Latn': 'kmb',
+    'kmr_Latn': 'kmr', 'kon_Latn': 'kon', 'kor_Hang': 'ko', 'lao_Laoo': 'lo',
+    'lij_Latn': 'lij', 'lim_Latn': 'li', 'lin_Latn': 'ln', 'lit_Latn': 'lt',
+    'lmo_Latn': 'lmo', 'ltg_Latn': 'ltg', 'ltz_Latn': 'lb', 'lua_Latn': 'lua',
+    'lug_Latn': 'lg', 'luo_Latn': 'luo', 'lus_Latn': 'lus', 'lvs_Latn': 'lv',
+    'mag_Deva': 'mag', 'mai_Deva': 'mai', 'mal_Mlym': 'ml', 'mar_Deva': 'mr',
+    'min_Arab': 'min-Arab', 'min_Latn': 'min-Latn', 'mkd_Cyrl': 'mk', 'plt_Latn': 'plt',
+    'mlt_Latn': 'mt', 'mni_Beng': 'mni', 'khk_Cyrl': 'khk', 'mos_Latn': 'mos',
+    'mri_Latn': 'mi', 'mya_Mymr': 'my', 'nld_Latn': 'nl', 'nno_Latn': 'nn',
+    'nob_Latn': 'nb', 'npi_Deva': 'ne', 'nso_Latn': 'nso', 'nus_Latn': 'nus',
+    'nya_Latn': 'ny', 'oci_Latn': 'oc', 'gaz_Latn': 'gaz', 'ory_Orya': 'or',
+    'pag_Latn': 'pag', 'pan_Guru': 'pa', 'pap_Latn': 'pap', 'pes_Arab': 'fa',
+    'pol_Latn': 'pl', 'por_Latn': 'pt', 'prs_Arab': 'prs', 'pbt_Arab': 'pst',
+    'quy_Latn': 'quy', 'ron_Latn': 'ro', 'run_Latn': 'rn', 'rus_Cyrl': 'ru',
+    'sag_Latn': 'sg', 'san_Deva': 'sa', 'sat_Olck': 'sat', 'scn_Latn': 'scn',
+    'shn_Mymr': 'shn', 'sin_Sinh': 'si', 'slk_Latn': 'sk', 'slv_Latn': 'sl',
+    'smo_Latn': 'sm', 'sna_Latn': 'sn', 'snd_Arab': 'sd', 'som_Latn': 'so',
+    'sot_Latn': 'st', 'spa_Latn': 'es', 'als_Latn': 'sq', 'srd_Latn': 'sc',
+    'srp_Cyrl': 'sr', 'ssw_Latn': 'ss', 'sun_Latn': 'su', 'swe_Latn': 'sv',
+    'swh_Latn': 'sw', 'szl_Latn': 'szl', 'tam_Taml': 'ta', 'tat_Cyrl': 'tt',
+    'tel_Telu': 'te', 'tgk_Cyrl': 'tg', 'tgl_Latn': 'tl', 'tha_Thai': 'th',
+    'tir_Ethi': 'ti', 'taq_Latn': 'taq-Latn', 'taq_Tfng': 'taq-Tfng', 'tpi_Latn': 'tpi',
+    'tsn_Latn': 'tn', 'tso_Latn': 'ts', 'tuk_Latn': 'tk', 'tum_Latn': 'tum',
+    'tur_Latn': 'tr', 'twi_Latn': 'tw', 'tzm_Tfng': 'tzm', 'uig_Arab': 'ug',
+    'ukr_Cyrl': 'uk', 'umb_Latn': 'umb', 'urd_Arab': 'ur', 'uzn_Latn': 'uz',
+    'vec_Latn': 'vec', 'vie_Latn': 'vi', 'war_Latn': 'war', 'wol_Latn': 'wo',
+    'xho_Latn': 'xh', 'ydd_Hebr': 'yi', 'yor_Latn': 'yo', 'yue_Hant': 'yue',
+    'zho_Hans': 'zh', 'zho_Hant': 'zh-TW', 'zsm_Latn': 'ms', 'zul_Latn': 'zu',
+    'arn_Latn':'arn', 'arg_Latn':'arg'
+}
+
+ISO639_1_TO_ISO639_3_SCRIPT = {v: k for k, v in ISO639_3_SCRIPT_TO_ISO639_1.items()}
+
+def get_flores_code(lang):
+    try:
+        return ISO639_1_TO_ISO639_3_SCRIPT[lang]
+    except KeyError:
+        raise ValueError(f"No FLORES mapping for language code: {lang}")
