@@ -1,199 +1,174 @@
 # pipeline.py
 import argparse
-import json
+import yaml
 import os
 from steps import input_formats, embeddings, langid, filtering, deduplicate, normalisation
 
+MERGED_STEPS = {"dedup", "filter", "normalise"}
+PER_CORPUS_STEPS = {"input", "embeddings", "langid"}
+
+def ensure_dir(path):
+	os.makedirs(path, exist_ok=True)
+
 def run_pipeline_from_config(config):
 	"""
-	Run pipeline using a config dictionary.
+	Entry point for running the pipeline from a config dict.
+	Handles both single-corpus and multi-corpus modes.
 	"""
-	inputs = config.get("inputs")
-	if inputs:
-		out_dir=config.get("output")
-		if out_dir is None:
-			raise ValueError("Config must include an 'output' directory")
-		os.makedirs(out_dir, exist_ok=True)
-		results = {}
-		for inp in inputs:
-			name = inp["name"]
-			print(f"[pipeline] Processing input set: {name}")
-			result = run_pipeline(
-				input_path=inp["paths"],
-				output_path = os.path.join(out_dir, name),
-				steps=config.get("steps"),
-				l1=config.get("l1"),
-				l2=config.get("l2"),
-				format=inp.get("type", config.get("format", "plain_text")),
-				alignment=config.get("alignment_score"),
-				langid_l1=config.get("langid_l1_prob"),
-				langid_l2=config.get("langid_l2_prob"),
-				model=config.get("model", "labse"),
-				model_path=config.get("model_path")
-			)
-			results[name] = result
-		return results
-	else:
-		# fallback to single-input config
-		return run_pipeline(
-			input_path=config.get("input"),
-			output_path=config.get("output"),
-			l1=config.get("l1"),
-			l2=config.get("l2"),
-			format=config.get("format", "plain_text"),
-			alignment=config.get("alignment_score"),
-			langid_l1=config.get("langid_l1_prob"),
-			langid_l2=config.get("langid_l2_prob"),
-			model=config.get("model", "labse"),
-			model_path=config.get("model_path")
-		)
+	if not config.get("inputs"):
+		return run_single_corpus(config)
 
-# def load_embedding_model(name, model_path=None):
-# 	"""
-# 	Factory for loading embedding models.
-# 	Extend this as new models are supported.
-# 	"""
-# 	if name == "labse":
-# 		print("[pipeline] Loading LaBSE model...")
-# 		from sentence_transformers import SentenceTransformer
-# 		# If a local path is provided, use it
-# 		if model_path is not None:
-# 			return SentenceTransformer(model_path)
-# 		else:
-# 			# Otherwise, use Hugging Face model name to auto-download
-# 			hf_model_name = "sentence-transformers/LaBSE"
-# 			cache_dir = os.path.expanduser("~/.cache/my_pipeline_models")
-# 			return SentenceTransformer(hf_model_name, cache_folder=cache_dir)
-
-# 	elif name == "comet":
-# 		# placeholder, you can add COMET model loading here
-# 		raise NotImplementedError("COMET embeddings not yet supported")
+	return run_multi_corpus(config)
 
 
-# 	elif name == "sonar":
-# 		try:
-# 			import torch
-# 			from sonar.inference_pipelines.text import TextToEmbeddingModelPipeline
-# 		except ImportError:
-# 			raise ImportError(
-# 				"SONAR requested but not installed. "
-# 				"Install with `pip install sonar-space` and the correct fairseq2 build."
-# 			)
-
-# 		class SonarAdapter:
-# 			def __init__(self, device=None, dtype=None):
-# 				self.model = TextToEmbeddingModelPipeline(
-# 					encoder="text_sonar_basic_encoder",
-# 					tokenizer="text_sonar_basic_encoder",
-# 					device=device or torch.device("cpu"),
-# 					dtype=dtype or torch.float32,
-# 				)
-
-# 			def encode(self, sentences, lang="en"):
-# 				flores_code = get_flores_code(lang)
-# 				embs = self.model.predict(sentences, source_lang=flores_code)
-# 				return embs.cpu().numpy()  # match SentenceTransformer return type
-
-# 		print("[pipeline] Loading SONAR text embedding model...")
-# 		return SonarAdapter()
-
-# 	else:
-# 		raise ValueError(f"Unsupported embedding model: {name}")
-
-# 	else:
-# 		raise ValueError(f"Unsupported embedding model: {name}")
+def run_single_corpus(config):
+	ensure_dir(os.path.dirname(config["output"]))
+	return run_pipeline(
+		input_path=config.get("input"),
+		output_path=config["output"],
+		steps=config.get("steps", []),
+		l1=config.get("l1"),
+		l2=config.get("l2"),
+		format=config.get("format", "plain_text"),
+		alignment=config.get("alignment_score"),
+		langid_l1=config.get("langid_l1_prob"),
+		langid_l2=config.get("langid_l2_prob"),
+		model=config.get("model", "labse"),
+		model_path=config.get("model_path"),
+		start_from=config.get("start_from"),
+	)
 
 
-def run_pipeline(
-	input_path, 
-	output_path, 
-	steps, 
-	l1, 
-	l2, 
-	format, 
-	filter_config=None,
-	model="labse",
-	model_path=None,
-	alignment=None,
-	langid_l1=None,
-	langid_l2=None
-	):
+def run_multi_corpus(config):
+	out_dir = config["output"]
+	ensure_dir(out_dir)
+
+	merged_steps = [s for s in config.get("steps", []) if s in MERGED_STEPS]
+	intermediate_paths = []
+
+	for inp in config["inputs"]:
+		result_path = run_single_input(inp, config, out_dir)
+		if result_path:
+			intermediate_paths.append(result_path)
+
+	if not merged_steps:
+		return intermediate_paths
+
+	merged_path = merge_inputs(intermediate_paths, out_dir)
+	return run_pipeline(
+		input_path=merged_path,
+		output_path=os.path.join(out_dir, "merged"),
+		steps=merged_steps,
+		l1=config.get("l1"),
+		l2=config.get("l2"),
+		format="tsv",
+		alignment=config.get("alignment_score"),
+		langid_l1=config.get("langid_l1_prob"),
+		langid_l2=config.get("langid_l2_prob"),
+		model=config.get("model", "labse"),
+		model_path=config.get("model_path"),
+	)
+
+
+def run_single_input(inp, config, out_dir):
+	"""Run per-corpus steps for a single input definition."""
+	name = inp["name"]
+	base_out = os.path.join(out_dir, name)
+	steps_to_run = [s for s in inp.get("steps", []) if s in PER_CORPUS_STEPS]
+
+	if inp.get("start_from") and not steps_to_run:
+		return inp["start_from"]
+
+	print(f"[pipeline] Processing corpus: {name}")
+	return run_pipeline(
+		input_path=None if inp.get("start_from") else inp.get("paths"),
+		output_path=base_out,
+		steps=steps_to_run,
+		l1=config.get("l1"),
+		l2=config.get("l2"),
+		format=inp.get("type", config.get("format", "plain_text")),
+		alignment=config.get("alignment_score"),
+		langid_l1=config.get("langid_l1_prob"),
+		langid_l2=config.get("langid_l2_prob"),
+		model=config.get("model", "labse"),
+		model_path=config.get("model_path"),
+		start_from=inp.get("start_from"),
+	)
+
+
+def merge_inputs(intermediate_paths, out_dir):
+	"""Concatenate TSV files into one merged file (with header)."""
+	merged_path = os.path.join(out_dir, "merged.langid.tsv")
+	with open(merged_path, "w", encoding="utf8") as fout:
+		header_written = False
+		for path in intermediate_paths:
+			with open(path, "r", encoding="utf8") as fin:
+				header = next(fin)
+				if not header_written:
+					fout.write(header)
+					header_written = True
+				fout.writelines(fin)
+	print(f"[pipeline] Merged TSV written to {merged_path}")
+	return merged_path
+
+
+def run_pipeline(input_path, output_path, steps, l1, l2, format,
+				 filter_config=None, model="labse", model_path=None,
+				 alignment=None, langid_l1=None, langid_l2=None,
+				 start_from=None):
 	"""
 	Run the full pipeline or selected steps.
 	"""
-	data = None
+	current = start_from
+	step_fns = {
+		"input": lambda p: input_formats.run(
+			input_files=input_path, l1=l1, l2=l2, input_format=format,
+			output=p + ".formatted.tsv"),
+		"embeddings": lambda p: embeddings.add_embeddings(
+			current, p + ".embeddings.tsv",
+			model=embeddings.load_embedding_model(model, model_path),
+			l1=l1, l2=l2),
+		"langid": lambda p: langid.score(current, p + ".langid.tsv", l1, l2),
+		"filter": lambda p: filtering.apply_filters(
+			current, p + ".filtered.tsv", alignment, langid_l1, langid_l2),
+		"dedup": lambda p: deduplicate.deduplicate_tsv(current, p + ".deduped.tsv"),
+		"normalise": lambda p: normalisation.apply_normalisation(
+			current, p + ".normalised.tsv", l1, l2),
+	}
 
-	# Step: input reading
-	if "input" in steps:
-		print(f"[pipeline] Reading and formatting input: {input_path}")
-		
-		# Write reformatted TSV to a temporary file
-		formatted_path = output_path + ".formatted.tsv"
-		
-		# Convert input format -> TSV
-		input_formats.run(
-			input_files=input_path,
-			l1=l1,
-			l2=l2,
-			input_format=format,
-			output=formatted_path
-		)
-		
-		# Instead of loading into memory, just pass the path to downstream steps
-		data_path = formatted_path
-		print(f"[pipeline] Reformatted TSV written to: {formatted_path}")
+	for step in steps:
+		if current is None and step == "input":
+			current = input_path
+		if current is None and step == "filter":
+			current = input_path
+		if current is None:
+			raise ValueError(f"No TSV available before step '{step}'")
+		print(f"[pipeline] Running step: {step}")
+		out_path = output_path  # used as prefix
+		step_fns[step](out_path)
+		suffix = {
+			"input": ".formatted.tsv",
+			"embeddings": ".embeddings.tsv",
+			"langid": ".langid.tsv",
+			"filter": ".filtered.tsv",
+			"dedup": ".deduped.tsv",
+			"normalise": ".normalised.tsv",
+		}[step]
+		current = out_path + suffix
 
-	if "embeddings" in steps:
-		current_path= output_path + ".formatted.tsv"
-		embedding_model = embeddings.load_embedding_model(model, model_path=model_path)
-		embeddings_output = output_path + ".embeddings.tsv"
-		print(f"[pipeline] Computing embeddings with {model}")
-		embeddings.add_embeddings(current_path, embeddings_output, model=embedding_model,
-							  l1=l1, l2=l2)
-		
-
-	# Step: language ID
-	if "langid" in steps:
-		current_path = output_path + ".embeddings.tsv"
-		langid_output = output_path + ".langid.tsv"
-		print(f"[pipeline] Running language ID")
-		data = langid.score(current_path, langid_output, l1, l2)
-
-	if "dedup" in steps:
-		current_path = output_path + ".langid.tsv"
-		deduped_path = output_path + ".deduped.tsv"
-		data = deduplicate.deduplicate_tsv(current_path, deduped_path)
-		print(f"[pipeline] Deduplicated TSV written to: {deduped_path}")
-
-	if "filter" in steps:
-		print(f"[pipeline] Applying filters")
-		current_path = output_path + ".deduped.tsv"
-		filtered_path = output_path + ".filtered.tsv"
-		filtering.apply_filters(current_path, filtered_path, alignment, langid_l1, langid_l2)
-		print(f"[pipeline] Filtered TSV written to: {filtered_path}")
-
-
-	# Step: normalization
-	if "normalise" in steps:
-		current_path = output_path + ".filtered.tsv"
-		output_path = output_path + ".normalised.tsv"
-		print(f"[pipeline] Normalising")
-		data = normalisation.apply_normalisation(current_path, output_path, l1, l2)
-
-	return data
+	return current
 
 
 def main():
 	parser = argparse.ArgumentParser(description="Run the data cleaning pipeline.")
-	parser.add_argument("--config", type=str, help="Path to JSON config file with pipeline arguments")
+	parser.add_argument("--config", type=str, required=True,
+						help="Path to YAML config file")
 	args = parser.parse_args()
 
-	if args.config:
-		with open(args.config, "r", encoding="utf-8") as f:
-			config = json.load(f)
-		run_pipeline_from_config(config)
-	else:
-		parser.error("You must provide a --config JSON file")
+	with open(args.config, "r", encoding="utf-8") as f:
+		config = yaml.safe_load(f)
+	run_pipeline_from_config(config)
+
 
 if __name__ == "__main__":
 	main()

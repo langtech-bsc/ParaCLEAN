@@ -1,0 +1,42 @@
+# ===========================
+# Pipeline configuration file
+# Example: multi-corpus run
+# ===========================
+
+# Output directory (will be created if missing)
+output: "testing/multi"
+
+# Languages
+l1: "ca"
+l2: "zh"
+
+# Embedding model (choices: labse, comet, sonar)
+model: "labse"
+model_path: null
+
+# Filtering thresholds
+alignment_score: 0.75
+langid_l1_prob: 0.5
+langid_l2_prob: 0.5
+
+# Steps to run at the merged stage
+# Merged steps are filter dedup and normalise
+steps:
+  - filter
+  - dedup
+  - normalise
+
+# Input corpora (each runs its own per-corpus steps first)
+# per-corpus steps are input embeddings and langid
+inputs:
+  - name: "TED2020"
+    type: "plain_text"
+    paths: ["testing/TED2020.ca-zh.ca", "testing/TED2020.ca-zh.zh"]
+    # start_from: ***REMOVED***/testing/multi/TED2020.embeddings.tsv
+    steps: ["input", "embeddings", "langid"]
+
+  - name: "QED"
+    type: "plain_text"
+    paths: ["testing/QED.ca-zh.ca", "testing/QED.ca-zh.zh"]
+    # start_from: "testing/multi/QED.embeddings.tsv"   # resume from here instead of raw text
+    steps: ["input", "embeddings", "langid"]
