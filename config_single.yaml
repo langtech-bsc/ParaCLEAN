@@ -1,0 +1,33 @@
+# ===========================
+# Pipeline configuration file
+# Example: single corpus run
+# ===========================
+
+# Output directory (will be created if missing)
+output: "testing/single/single"
+
+# Languages
+l1: "ca"
+l2: "eu"
+
+# Embedding model (choices: labse, comet, sonar)
+model: "labse"
+model_path: null   # optional, if you want to point to a local model path
+
+# Filtering thresholds
+alignment_score: 0.75
+langid_l1_prob: 0.5
+langid_l2_prob: 0.5
+
+# Pipeline steps to run (in order)
+steps:
+  - input
+  - embeddings
+  - langid
+  - filter
+  - dedup
+  - normalise
+
+# Input corpus (single)
+input: ["testing/TED2020.ca-eu.ca", "testing/TED2020.ca-eu.eu"]
+format: "plain_text"  # or "tsv"

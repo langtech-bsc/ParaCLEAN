@@ -142,6 +142,8 @@ env.bak/
 venv.bak/
 venv_amd_cp39/
 slurm_logs/
+use_env_pipeline.sh
+sonar-env
 
 # Spyder project settings
 .spyderproject
