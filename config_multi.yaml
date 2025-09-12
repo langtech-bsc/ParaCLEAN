@@ -25,6 +25,9 @@ steps:
   - filter
   - dedup
   - normalise
+  - bifixer
+
+bifixer_flags: ["--ignore_segmentation", "--ignore_duplicates"]
 
 # Input corpora (each runs its own per-corpus steps first)
 # per-corpus steps are input embeddings and langid
