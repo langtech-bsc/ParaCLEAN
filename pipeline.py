@@ -2,9 +2,10 @@
 import argparse
 import yaml
 import os
-from steps import input_formats, embeddings, langid, filtering, deduplicate, normalisation
+import subprocess
+from steps import input_formats, embeddings, langid, filtering, deduplicate, normalisation, bifixer
 
-MERGED_STEPS = {"dedup", "filter", "normalise"}
+MERGED_STEPS = {"dedup", "filter", "normalise", "bifixer"}
 PER_CORPUS_STEPS = {"input", "embeddings", "langid"}
 
 def ensure_dir(path):
@@ -36,6 +37,7 @@ def run_single_corpus(config):
 		model=config.get("model", "labse"),
 		model_path=config.get("model_path"),
 		start_from=config.get("start_from"),
+		bifixer_flags=config.get("bifixer_flags", None)
 	)
 
 
@@ -67,6 +69,7 @@ def run_multi_corpus(config):
 		langid_l2=config.get("langid_l2_prob"),
 		model=config.get("model", "labse"),
 		model_path=config.get("model_path"),
+		bifixer_flags=config.get("bifixer_flags", None)
 	)
 
 
@@ -93,6 +96,7 @@ def run_single_input(inp, config, out_dir):
 		model=config.get("model", "labse"),
 		model_path=config.get("model_path"),
 		start_from=inp.get("start_from"),
+		bifixer_flags=config.get("bifixer_flags", None)
 	)
 
 
@@ -115,9 +119,10 @@ def merge_inputs(intermediate_paths, out_dir):
 def run_pipeline(input_path, output_path, steps, l1, l2, format,
 				 filter_config=None, model="labse", model_path=None,
 				 alignment=None, langid_l1=None, langid_l2=None,
-				 start_from=None):
+				 start_from=None, bifixer_flags=None):
 	"""
 	Run the full pipeline or selected steps.
+	bifixer_flags: optional list of strings with flags for Bifixer step
 	"""
 	current = start_from
 	step_fns = {
@@ -134,6 +139,7 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 		"dedup": lambda p: deduplicate.deduplicate_tsv(current, p + ".deduped.tsv"),
 		"normalise": lambda p: normalisation.apply_normalisation(
 			current, p + ".normalised.tsv", l1, l2),
+		"bifixer": lambda p: bifixer.run(current, p + ".bifixer.tsv",l1, l2, flags=bifixer_flags),
 	}
 
 	for step in steps:
@@ -153,6 +159,7 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 			"filter": ".filtered.tsv",
 			"dedup": ".deduped.tsv",
 			"normalise": ".normalised.tsv",
+			"bifixer": ".bifixer.tsv"
 		}[step]
 		current = out_path + suffix
 
