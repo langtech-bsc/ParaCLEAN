@@ -6,9 +6,10 @@
 # Output directory (will be created if missing)
 output: "testing/multi"
 
-# Languages
-l1: "ca"
-l2: "zh"
+# Languages - ISO 639-3 language code, followed by the ISO 15924 script code
+# e.g. "cat_Latn", "srb_Cryl", "zho_Hans"
+l1: "Catalan"
+l2: "cmn_Hani"
 
 # Embedding model (choices: labse, comet, sonar)
 model: "labse"
@@ -24,8 +25,9 @@ langid_l2_prob: 0.5
 steps:
   - filter
   - dedup
-  - normalise
   - bifixer
+  - normalise
+
 
 bifixer_flags: ["--ignore_segmentation", "--ignore_duplicates"]
 
@@ -34,12 +36,12 @@ bifixer_flags: ["--ignore_segmentation", "--ignore_duplicates"]
 inputs:
   - name: "TED2020"
     type: "plain_text"
-    paths: ["testing/TED2020.ca-zh.ca", "testing/TED2020.ca-zh.zh"]
-    # start_from: ***REMOVED***/testing/multi/TED2020.embeddings.tsv
-    steps: ["input", "embeddings", "langid"]
+    # paths: ["testing/TED2020.ca-zh.ca", "testing/TED2020.ca-zh.zh"]
+    start_from: ***REMOVED***/testing/multi/TED2020.embeddings.tsv
+    steps: ["langid"]
 
   - name: "QED"
     type: "plain_text"
-    paths: ["testing/QED.ca-zh.ca", "testing/QED.ca-zh.zh"]
-    # start_from: "testing/multi/QED.embeddings.tsv"   # resume from here instead of raw text
-    steps: ["input", "embeddings", "langid"]
+    # paths: ["testing/QED.ca-zh.ca", "testing/QED.ca-zh.zh"]
+    start_from: "testing/multi/QED.embeddings.tsv"   # resume from here instead of raw text
+    steps: ["langid"]
