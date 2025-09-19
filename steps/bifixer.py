@@ -1,10 +1,17 @@
 import subprocess
+import shutil
+
+def is_available() -> bool:
+    """Check if bifixer is on PATH."""
+    return shutil.which("bifixer") is not None
 
 def run(input_tsv, output_tsv, l1, l2, flags=None):
 	"""
 	Optional Bifixer step.
 	flags: list of strings for Bifixer CLI options
 	"""
+	if not is_available():
+		print("[bifixer] Not installed. Skipping step.")
 	flags = flags or []
 	cols = ["--scol", "1", "--tcol", "2"]
 	try:

@@ -166,8 +166,15 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 		"dedup": lambda p: deduplicate.deduplicate_tsv(current, p + ".deduped.tsv"),
 		"normalise": lambda p: normalisation.apply_normalisation(
 			current, p + ".normalised.tsv", l1, l2),
-		"bifixer": lambda p: bifixer.run(current, p + ".bifixer.tsv",l1, l2, flags=bifixer_flags),
 	}
+	
+	# Only add bifixer step if installed
+	if bifixer.is_available():
+		step_fns["bifixer"] = lambda p: bifixer.run(
+			current, p + ".bifixer.tsv", l1, l2, flags=bifixer_flags
+		)
+	else:
+		print("[pipeline] Bifixer not available, step omitted.")
 
 	for step in steps:
 		if current is None and step == "input":
@@ -176,8 +183,12 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 			current = input_path
 		if current is None:
 			raise ValueError(f"No TSV available before step '{step}'")
+
+		if step not in step_fns:
+			print(f"[pipeline] Step '{step}' not available, skipping.")
+
 		print(f"[pipeline] Running step: {step}")
-		out_path = output_path  # used as prefix
+		out_path = output_path 
 		step_fns[step](out_path)
 		suffix = {
 			"input": ".formatted.tsv",
@@ -187,8 +198,9 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 			"dedup": ".deduped.tsv",
 			"normalise": ".normalised.tsv",
 			"bifixer": ".bifixer.tsv"
-		}[step]
-		current = out_path + suffix
+		}.get(step)
+		if suffix:
+			current = out_path + suffix
 
 	return current
 

@@ -3,7 +3,7 @@ import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import tempfile
 import subprocess
-from unidecode import unidecode
+from fast_unidecode import unidecode
 import xxhash
 
 # Aggressive normalization for deduplication
