@@ -4,18 +4,45 @@ import yaml
 import os
 import subprocess
 from steps import input_formats, embeddings, langid, filtering, deduplicate, normalisation, bifixer
+from steps.langid import LangResolver
 
 MERGED_STEPS = {"dedup", "filter", "normalise", "bifixer"}
 PER_CORPUS_STEPS = {"input", "embeddings", "langid"}
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UTILS = os.path.join(BASE_DIR, "utils")
+
+GLOTLID_INV = os.path.join(UTILS, "glotlid_inventory.json")
+ALIASES = os.path.join(UTILS, "aliases.json")
 
 def ensure_dir(path):
 	os.makedirs(path, exist_ok=True)
 
-def run_pipeline_from_config(config):
+def run_pipeline_from_config(config, resolver=None):
 	"""
 	Entry point for running the pipeline from a config dict.
 	Handles both single-corpus and multi-corpus modes.
 	"""
+	if resolver:
+		def _resolve_field(val):
+			if not val:
+				return None
+			try:
+				# resolve to a single GlotLID code (no expansion)
+				return resolver.resolve(val, expand=False)
+			except Exception as e:
+				raise ValueError(f"Failed to resolve language '{val}': {e}")
+
+		# Resolve global languages
+		config["l1"] = _resolve_field(config.get("l1"))
+		config["l2"] = _resolve_field(config.get("l2"))
+
+		# Resolve per-input override languages if present
+		for inp in config.get("inputs", []):
+			if inp.get("l1"):
+				inp["l1"] = _resolve_field(inp.get("l1"))
+			if inp.get("l2"):
+				inp["l2"] = _resolve_field(inp.get("l2"))
+
 	if not config.get("inputs"):
 		return run_single_corpus(config)
 
@@ -87,8 +114,8 @@ def run_single_input(inp, config, out_dir):
 		input_path=None if inp.get("start_from") else inp.get("paths"),
 		output_path=base_out,
 		steps=steps_to_run,
-		l1=config.get("l1"),
-		l2=config.get("l2"),
+		l1=inp.get("l1", config.get("l1")),
+		l2=inp.get("l2", config.get("l2")),
 		format=inp.get("type", config.get("format", "plain_text")),
 		alignment=config.get("alignment_score"),
 		langid_l1=config.get("langid_l1_prob"),
@@ -139,8 +166,15 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 		"dedup": lambda p: deduplicate.deduplicate_tsv(current, p + ".deduped.tsv"),
 		"normalise": lambda p: normalisation.apply_normalisation(
 			current, p + ".normalised.tsv", l1, l2),
-		"bifixer": lambda p: bifixer.run(current, p + ".bifixer.tsv",l1, l2, flags=bifixer_flags),
 	}
+	
+	# Only add bifixer step if installed
+	if bifixer.is_available():
+		step_fns["bifixer"] = lambda p: bifixer.run(
+			current, p + ".bifixer.tsv", l1, l2, flags=bifixer_flags
+		)
+	else:
+		print("[pipeline] Bifixer not available, step omitted.")
 
 	for step in steps:
 		if current is None and step == "input":
@@ -149,8 +183,12 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 			current = input_path
 		if current is None:
 			raise ValueError(f"No TSV available before step '{step}'")
+
+		if step not in step_fns:
+			print(f"[pipeline] Step '{step}' not available, skipping.")
+
 		print(f"[pipeline] Running step: {step}")
-		out_path = output_path  # used as prefix
+		out_path = output_path 
 		step_fns[step](out_path)
 		suffix = {
 			"input": ".formatted.tsv",
@@ -160,8 +198,9 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 			"dedup": ".deduped.tsv",
 			"normalise": ".normalised.tsv",
 			"bifixer": ".bifixer.tsv"
-		}[step]
-		current = out_path + suffix
+		}.get(step)
+		if suffix:
+			current = out_path + suffix
 
 	return current
 
@@ -174,7 +213,9 @@ def main():
 
 	with open(args.config, "r", encoding="utf-8") as f:
 		config = yaml.safe_load(f)
-	run_pipeline_from_config(config)
+
+	resolver = LangResolver(GLOTLID_INV, ALIASES)
+	run_pipeline_from_config(config, resolver=resolver)
 
 
 if __name__ == "__main__":

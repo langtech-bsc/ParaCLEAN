@@ -1,0 +1,4 @@
+{
+  "arabic": ["ace_Arab", "acm_Arab", "aeb_Arab", "ajp_Arab", "apc_Arab", "arb_Arab", "arq_Arab", "ars_Arab", "ary_Arab", "arz_Arab", "azb_Arab", "bcc_Arab", "bjn_Arab", "brh_Arab", "ckb_Arab", "fas_Arab", "fuv_Arab", "glk_Arab", "hac_Arab", "kas_Arab", "knc_Arab", "lki_Arab", "lrc_Arab", "min_Arab", "mzn_Arab", "ota_Arab", "pbt_Arab", "pnb_Arab", "sdh_Arab", "shu_Arab", "skr_Arab", "sus_Arab", "tuk_Arab", "uig_Arab", "urd_Arab", "uzs_Arab", "zsm_Arab"],
+  "chinese": ["cmn_Hani", "yue_Hani"]
+}

@@ -7,12 +7,13 @@
 output: "testing/single/single"
 
 # Languages
-l1: "ca"
-l2: "eu"
+# See the README for accepted language input formats
+l1: "Catalan"
+l2: "yue_Hani"
 
 # Embedding model (choices: labse, comet, sonar)
 model: "labse"
-model_path: null   # optional, if you want to point to a local model path
+model_path: "***REMOVED***/labse_model"   # optional, if you want to point to a local model path
 
 # Filtering thresholds
 alignment_score: 0.75
@@ -27,7 +28,12 @@ steps:
   - filter
   - dedup
   - normalise
+  - bifixer
+
+
+bifixer_flags: ["--ignore_segmentation", "--ignore_duplicates"]
 
 # Input corpus (single)
-input: ["testing/TED2020.ca-eu.ca", "testing/TED2020.ca-eu.eu"]
+input: ["***REMOVED***/testing/TED2020.ca-zh.ca", "***REMOVED***/testing/TED2020.ca-zh.zh"]
+# start_from: "***REMOVED***/testing/single/single.langid.tsv"
 format: "plain_text"  # or "tsv"
