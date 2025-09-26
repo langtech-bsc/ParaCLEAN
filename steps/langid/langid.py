@@ -8,17 +8,13 @@ def load_detector():
 	return model
 
 def detect_with_glotlid(sentence, lang, detector):
-	predictions = detector.predict(sentence)
-	predicted_languages = predictions[0]
-	raw_probs = predictions[1]
-	total = sum(raw_probs)
-	norm_probs = [float(p / total * 100) for p in raw_probs]
+	predicted_languages, raw_probs = detector.predict(sentence, k=-1)
 	target_label = f"__label__{lang}"
-	for label, prob in zip(predicted_languages, norm_probs):
+	for label, prob in zip(predicted_languages, raw_probs):
 		if label == target_label:
-			return prob
-	return 0  # default if not found
-
+			return prob * 100  # convert to percentage if you prefer
+	return 0
+	
 def score(input_path, output_path, l1, l2):
 	glotlid_detector = load_detector()
 
