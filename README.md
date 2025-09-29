@@ -1,28 +1,45 @@
 # Translation Data Processing Pipeline
 
 ## Overview
-This project provides a modular pipeline for preparing parallel corpora for machine translation research.  
+
+This project provides a modular pipeline for preparing parallel corpora for machine translation research.\
 It standardises preprocessing across datasets, making it easier to train and evaluate translation models on consistent, high-quality data.
 
 The pipeline is:
-- **Modular** – enable or disable steps as needed.  
-- **Configurable** – control all behaviour via a YAML config file.  
-- **Reproducible** – consistent outputs for large-scale experiments.  
+
+- **Modular** – enable or disable steps as needed.
+- **Configurable** – control all behaviour via a YAML config file.
+- **Reproducible** – consistent outputs for large-scale experiments.
+- **Scalable** – runs on laptops or HPC clusters with optional parallelisation.
+
+---
 
 ## Features
-- **Input handling**: Read corpora in plain text (`.txt`) or tab-separated (`.tsv`) formats.  
-- **Embeddings**: Compute multilingual sentence embeddings (e.g. LaBSE, SONAR).  
-- **Language ID**: Detect and filter sentences by language.  
-- **Filtering**: Filter by embedding scores and language probability  
+
+- **Input handling**: Read corpora in plain text (`.txt`) or tab-separated (`.tsv`) formats.
+- **Embeddings**: Compute multilingual sentence embeddings (e.g. LaBSE, SONAR).
+- **Language ID**: Detect and filter sentences by language.
+- **Filtering**: Filter by embedding scores, sentence ratios, and language probability.
 - **Deduplication**: Remove duplicate sentence pairs and fuzzy matches across corpora.
 - **Bifixer**: Apply any of bifixer's functionality. Default is to ignore deduplication and segmentation.
-- **Normalisation**: Standardise punctuation and spacing.  
+- **Normalisation**: Standardise punctuation, spacing, and casing.
+
+---
+
+## Prerequisites
+
+- Python ≥3.8
+- Sufficient disk space (embeddings can be large).
+- (Optional) HPC cluster or multi-core machine for parallel processing.
+
+---
 
 ## Installation
+
 Clone the repository and set up a virtual environment:
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/langtech-bsc/ParaCLEAN
 cd ParaClean
 python -m venv venv
 source venv/bin/activate   # or venv\Scripts\activate on Windows
@@ -75,6 +92,21 @@ steps:
 input: ["data-storage/Europarl.es-de.es", "data-storage/Europarl.es-de.de"]
 format: "plain_text"  # or "tsv"
 ```
+## Pipeline Steps
+**input** Preprocesses and normalises the raw input format.
+
+**embeddings** Computes sentence embeddings for later filtering.
+
+**langid** Runs language identification to remove sentences in the wrong language.
+
+**filter** Applies heuristics and thresholds (e.g. length ratios, embedding similarity, language ID confidence).
+
+**dedup** Removes duplicate or near-duplicate sentence pairs.
+
+**bifixer** Integrates bifixer functionality. Default: no deduplication/segmentation. Requires an existing installation of bifixer
+
+**normalise** Applies lightweight normalisation to punctuation, casing, etc.
+
 ## Outputs
 
 Each step writes intermediate files under the desginated output directory.
@@ -85,7 +117,7 @@ SONAR embeddings: inputs longer than 514 tokens are truncated.
 
 Disk space: embeddings can be large; ensure sufficient space.
 
-Extensibility: filtering and normalisation rules can be customised by editing the corresponding modules in steps/.
+Extensibility: filtering and normalisation rules can be customised by editing the corresponding modules in steps/ or adding language-specific rules in `normalisation`
 
 ## Development
 
