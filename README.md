@@ -39,7 +39,7 @@ The pipeline is:
 Clone the repository and set up a virtual environment:
 
 ```bash
-git clone https://github.com/paraclean023-coder/ParaCLEAN
+git clone https://github.com/langtech-bsc/ParaCLEAN
 cd ParaClean
 python -m venv venv
 source venv/bin/activate   # or venv\Scripts\activate on Windows
