@@ -13,7 +13,7 @@ l2: "yue_Hani"
 
 # Embedding model (choices: labse, comet, sonar)
 model: "labse"
-model_path: "***REMOVED***/labse_model"   # optional, if you want to point to a local model path
+model_path: "/path/to/labse_model"   # optional, if you want to point to a local model path
 
 # Filtering thresholds
 alignment_score: 0.75
@@ -34,6 +34,6 @@ steps:
 bifixer_flags: ["--ignore_segmentation", "--ignore_duplicates"]
 
 # Input corpus (single)
-input: ["***REMOVED***/testing/TED2020.ca-zh.ca", "***REMOVED***/testing/TED2020.ca-zh.zh"]
-# start_from: "***REMOVED***/testing/single/single.langid.tsv"
+input: ["/testing/TED2020.ca-zh.ca", "/testing/TED2020.ca-zh.zh"]
+# start_from: "/testing/single/single.langid.tsv"
 format: "plain_text"  # or "tsv"
