@@ -207,13 +207,19 @@ Example:
 ```
 
 ## License
-This project is released under the MIT License
-You are free to use, modify, and distribute it with attribution.
+
+This project is released under the Apache 2.0 license.
 
 ## Citation
 
+To be added.
 
 ## Acknowledgements
+
+This work is funded by the Ministerio para la Transformación Digital y de la Función Pública - Funded by EU – NextGenerationEU within the framework of the project Desarrollo de Modelos ALIA. 
+
+## Related Resources
+
 This project builds upon components and concepts from:
 
 - [Bifixer](https://github.com/bitextor/bifixer)
