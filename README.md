@@ -208,11 +208,11 @@ Example:
 
 ## License
 
-This project is released under the Apache 2.0 license.
+This project is released under the [Apache 2.0 License](https://github.com/langtech-bsc/ParaCLEAN/tree/main?tab=Apache-2.0-1-ov-file#).
 
 ## Citation
 
-To be added.
+Citation information will be added here once the associated publication is available.
 
 ## Acknowledgements
 
