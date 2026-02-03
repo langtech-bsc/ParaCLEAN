@@ -21,7 +21,7 @@ The pipeline is:
 - **Language ID**: Calculate probability that segments are in the desired language (using GlotLID).
 - **Filtering**: Filter by user-defined embedding scores and language probability thresholds.
 - **Deduplication**: Remove duplicate sentence pairs and fuzzy matches across corpora.
-- **Bifixer**: Apply any of Bifixer's functionality. Default is to ignore deduplication and segmentation.
+- **Bifixer**: Enables optional Bifixer-based processing if Bifixer is installed. Requires separate installation. By default, deduplication and segmentation are skipped.
 - **Normalisation**: Standardise punctuation, spacing, and casing. Includes easy-to extend language specific normalisation.
 
 ---
