@@ -1,0 +1,202 @@
+id,category,src_clean_ca,src_noisy_ca,ref_ja,expected_regex_ja
+NUDR-0001,cardinal,El pressupost és de 1.234 euros.,"El pressupost és de 1,234 €.","予算は1,234ユーロです。","(予算は)?\s*1,234\s*ユーロ(です|だ|。)"
+NUDR-0002,cardinal,Va vendre 12.345 llibres.,"Va vendre 12,345 llibres.","彼は12,345冊の本を売った。","12,345\s*冊"
+NUDR-0003,cardinal,Hi havia 123.456 visitants ahir.,"Hi havia 123,456 visitants ahir.","昨日は123,456人の来訪者がいた。","123,456\s*人"
+NUDR-0004,cardinal,El deute és de 1.000.000 €.,"El deute és de €1,000,000.","負債は1,000,000ユーロだ。","1,000,000\s*ユーロ"
+NUDR-0005,cardinal,"Són 0,75 litres.",Són 0.75 L.,0.75リットルです。,0\.75\s*リットル
+NUDR-0006,cardinal,"El preu és 1,99 €.",El preu és €1.99.,価格は1.99ユーロです。,1\.99\s*ユーロ
+NUDR-0007,ordinal,Va quedar en 1r lloc.,Va quedar en 1º lloc.,彼は1位になった。,1位
+NUDR-0008,ordinal,És la 2a vegada que passa.,És la 2ª vegada que passa.,それが起きるのは2回目だ。,2回目
+NUDR-0009,ordinal,Va néixer el 3r dia del mes.,Va néixer el 3º dia del mes.,彼は今月の3日生まれだ。,3日
+NUDR-0010,ordinal,La 4a edició del festival.,La 4ª edició del festival.,第4回の祭り。,第?4回
+NUDR-0011,range,Entre 4 i 6 quilòmetres.,Entre 4–6 km.,4～6キロの間。,4[～~\-–]6\s*キロ
+NUDR-0012,range,Temperatura: 18–22 °C.,Temperatura: 18 a 22C.,気温は18～22℃。,18[～~\-–]22\s*℃
+NUDR-0013,range,Puntuació de 70-80 punts.,Puntuació de 70 a 80 pts.,スコアは70～80点。,70[～~\-–]80\s*点
+NUDR-0014,range,Horari: 9:00-17:30.,Horari: 9.00–17.30.,営業時間は9:00～17:30。,9:00[～~\-–]17:30
+NUDR-0015,unit,La distància és de 5 km.,La distància és de 5 quilòmetres.,距離は5キロです。,5\s*キロ
+NUDR-0016,unit,Pesa 72 kg.,Pesa 72 quilograms.,体重は72キロです。,72\s*キロ
+NUDR-0017,unit,Velocitat màxima: 110 km/h.,Velocitat màxima: 110 kmh.,最高速度は時速110キロ。,(時速)?110\s*キロ
+NUDR-0018,currency,Cost: 3.500 ¥.,"Cost: ¥3,500.","費用は3,500円。","3,500\s*円"
+NUDR-0019,currency,Ingressos de 2.3 M€.,Ingressos de €2.3M.,収益は2.3億ユーロ。,2\.3億\s*ユーロ
+NUDR-0020,currency,Va pagar $15.,Va pagar 15 dòlars.,15ドルを支払った。,15\s*ドル
+NUDR-0021,date,Data: 2024-01-05.,Data: 05/01/2024.,日付：2024年1月5日。,2024年1月5日
+NUDR-0022,date,La reunió és el 12/11/2023.,La reunió és el 11-12-2023.,会議は2023年11月12日だ。,2023年11月12日
+NUDR-0023,time,A les 07:05 del matí.,A les 7.05 a.m.,午前7時05分に。,(午前)?7時0?5分
+NUDR-0024,time,A les 20:30 del vespre.,A les 8.30 p.m.,午後8時30分に。,(午後)?8時30分
+NUDR-0025,percent,"Un 5,5% d'augment.",Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0026,percent,Taxa d'atur del 12%.,Taxa d'atur del 12.0%.,失業率は12％。,12\s*％
+NUDR-0027,decimal,"La mitjana és 0,003.",La mitjana és 0.003.,平均は0.003だ。,0\.003
+NUDR-0028,decimal,"PI ≈ 3,1416.",PI ≈ 3.1416.,円周率は約3.1416。,3\.1416
+NUDR-0029,ambiguous,El partit va acabar 4–3.,El partit va acabar 4-3.,試合は4対3で終わった。,4対3
+NUDR-0030,ambiguous,Habitació 101.,Habitació #101.,101号室。,101号室
+NUDR-0031,long_mixed,"Segons l'informe publicat el 5 de gener de 2024, el pressupost total del projecte s'eleva a 1.234.567 €, repartits en tres fases entre 2024 i 2025.","Segons l'informe publicat el 05/01/2024, el pressupost total del projecte s'eleva a €1,234,567, repartits en 3 fases entre 2024 i 2025.","2024年1月5日に公表された報告書によれば、プロジェクトの総予算は1,234,567ユーロで、2024年から2025年にかけて3つの段階に分配される。","(?=.*2024年1月5日)(?=.*1,234,567\s*ユーロ)"
+NUDR-0032,long_range_temp,"Durant el període d'abril a juny, la temperatura mitjana va oscil·lar entre 18 i 22 °C, amb pics puntuals de 30,5 °C a l'interior.","Durant abr-jun, la temperatura mitjana va oscil·lar entre 18–22C, amb pics de 30.5C a l'interior.",4月から6月にかけて、平均気温は18～22℃で、内陸部では30.5℃のピークも観測された。,(?=.*18[～~\-–]22\s*℃)(?=.*30\.5\s*℃)
+NUDR-0033,long_range_distance,"Diumenge caminarem entre 4 i 6 quilòmetres per la costa, i si el temps acompanya allargarem la ruta fins als 8 km.","Dg. caminarem entre 4–6 km per la costa, i si fa bo allargarem la ruta fins als 8km.",日曜は海岸沿いに4～6キロ歩き、天気が良ければ8キロまで延ばす。,(?=.*4[～~\-–]6\s*キロ)(?=.*8\s*キロ)
+NUDR-0034,long_percent_currency,"La taxa d'atur va baixar del 12% al 10,5% en sis mesos; al mateix temps, els ingressos mitjans van pujar a 2.3 M€.","La taxa d'atur va baixar del 12.0% al 10.5% en 6 mesos; alhora, els ingressos mitjans van pujar a €2.3M.",失業率は6か月で12％から10.5％に低下し、同時に平均収入は2.3億ユーロに上昇した。,(?=.*12\s*％)(?=.*10\.5\s*％)(?=.*2\.3億\s*ユーロ)
+NUDR-0035,long_time_duration,"El vol sortia a les 07:05 i aterrava a les 20:30, amb una escala de 1 h 20 min.","El vol sortia a les 7.05 a.m. i aterrava a les 8.30 p.m., amb una escala de 1h20m.",午前7時05分に出発し、午後8時30分に到着、1時間20分の乗り継ぎがあった。,(?=.*7時0?5分)(?=.*8時30分)(?=.*1時間20分)
+NUDR-0036,long_dates_large_numbers,El 12/11/2023 vam vendre 12.345 llibres i en total l'any vam superar els 123.456 exemplars.,"L'11-12-2023 vam vendre 12,345 llibres i en total l'any vam superar els 123,456 exemplars.","2023年11月12日に12,345冊を販売し、年間の合計は123,456部を超えた。","(?=.*2023年11月12日)(?=.*12,345\s*冊)(?=.*123,456)"
+NUDR-0037,long_currency_dates,"El contracte fixa un pagament inicial de $15 i un segon de 3.500 ¥, a liquidar abans del 03/04/2025.","El contracte fixa un pagament inicial de $15.00 i un segon de ¥3,500, a liquidar abans del 2025-04-03.","契約では、最初に15ドル、次に3,500円を支払い、2025年4月3日までに清算する。","(?=.*15\s*ドル)(?=.*3,500\s*円)(?=.*2025年4月3日)"
+NUDR-0038,long_units_speed,La distància total prevista és de 5 km el primer dia i de 110 km/h la velocitat màxima permesa a l'autopista.,La distància total prevista és de 5 quilòmetres el primer dia i de 110 kmh la velocitat màxima permesa a l'autopista.,初日は総距離5キロ、高速道路の最高許可速度は時速110キロ。,(?=.*5\s*キロ)(?=.*(時速)?110\s*キロ)
+NUDR-0039,long_score_date,"El partit va acabar 4–3 després d'una pròrroga de 15 minuts, el 21/02/2022.","El partit va acabar 4-3 després d'una pròrroga de 15', el 21-02-2022.",試合は延長15分の末、2022年2月21日に4対3で終わった。,(?=.*4対3)(?=.*2022年2月21日)
+NUDR-0040,long_debt_discount_date,"Segons l'auditoria, el deute acumulat és de 1.000.000 €, però amb un descompte del 5,5% si es paga abans del 30/06/2026.","Segons l'auditoria, el deute acumulat és de €1,000,000, però amb un descompte del 5.5 % si es paga abans del 2026-06-30.","監査によると、累積負債は1,000,000ユーロだが、2026年6月30日までに支払えば5.5％の割引が適用される。","(?=.*1,000,000\s*ユーロ)(?=.*5\.5\s*％)(?=.*2026年6月30日)"
+NUDR-0041,date,Data: 2024-10-24.,Data: 24/10/2024.,日付：2024年10月24日。,2024年10月24日
+NUDR-0042,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0043,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0044,range,Entre 44 i 49 quilòmetres.,Entre 44-49 km.,44～49キロの間。,44[～~\-–]49\s*キロ
+NUDR-0045,range,Entre 37 i 57 quilòmetres.,Entre 37-57 km.,37～57キロの間。,37[～~\-–]57\s*キロ
+NUDR-0046,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0047,time,Horari: 10:30-16:05.,Horari: 10.30–16.05.,営業時間は10:30～16:05。,10:30[～~\-–]16:05
+NUDR-0048,long_mixed,"Segons l'informe del 2024-05-30, el pressupost és de 43 €, i la distància prevista és entre 23 i 33 km; termini fins al 14/07/2024.","Informe 30/05/2024: €43, 23–33km; termini 2024-07-14.",2024年5月30日の報告書によれば、予算は43ユーロで、予定距離は23～33キロ、期限は2024年7月14日。,(?=.*43\s*ユーロ)(?=.*23[～~\-–]33\s*キロ)(?=.*2024年7月14日)
+NUDR-0049,long_mixed,"Segons l'informe del 2024-08-27, el pressupost és de 82,050 €, i la distància prevista és entre 23 i 31 km; termini fins al 08/12/2024.","Informe 27/08/2024: €82．050, 23–31km; termini 2024-12-08.","2024年8月27日の報告書によれば、予算は82,050ユーロで、予定距離は23～31キロ、期限は2024年12月8日。","(?=.*82,050\s*ユーロ)(?=.*23[～~\-–]31\s*キロ)(?=.*2024年12月8日)"
+NUDR-0050,date,Data: 2025-11-01.,Data: 01/11/2025.,日付：2025年11月1日。,2025年11月1日
+NUDR-0051,cardinal,"El pressupost és de 937,034 €.",El pressupost és de €937．034.,"予算は937,034ユーロです。","937,034\s*ユーロ"
+NUDR-0052,time,Horari: 09:30-16:05.,Horari: 9.30–16.05.,営業時間は9:30～16:05。,9:30[～~\-–]16:05
+NUDR-0053,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0054,range,Entre 14 i 15 quilòmetres.,Entre 14~15 km.,14～15キロの間。,14[～~\-–]15\s*キロ
+NUDR-0055,date,Data: 2025-01-15.,Data: 15/01/2025.,日付：2025年1月15日。,2025年1月15日
+NUDR-0056,time,Horari: 09:05-18:00.,Horari: 9.05–18.00.,営業時間は9:05～18:00。,9:05[～~\-–]18:00
+NUDR-0057,currency,Cost: 678.5 ¥.,Cost: ¥678・5.,費用は678.5円。,678\.5\s*円
+NUDR-0058,range,Entre 30 i 44 quilòmetres.,Entre 30 a 44 km.,30～44キロの間。,30[～~\-–]44\s*キロ
+NUDR-0059,time,Horari: 11:05-23:00.,Horari: 11.05–23.00.,営業時間は11:05～23:00。,11:05[～~\-–]23:00
+NUDR-0060,range,Entre 34 i 54 quilòmetres.,Entre 34 a 54 km.,34～54キロの間。,34[～~\-–]54\s*キロ
+NUDR-0061,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0062,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0063,long_mixed,"Segons l'informe del 2024-09-14, el pressupost és de 4,326 €, i la distància prevista és entre 21 i 30 km; termini fins al 04/02/2025.","Informe 14/09/2024: €4，326, 21–30km; termini 2025-02-04.","2024年9月14日の報告書によれば、予算は4,326ユーロで、予定距離は21～30キロ、期限は2025年2月4日。","(?=.*4,326\s*ユーロ)(?=.*21[～~\-–]30\s*キロ)(?=.*2025年2月4日)"
+NUDR-0064,range,Entre 18 i 49 quilòmetres.,Entre 18 a 49 km.,18～49キロの間。,18[～~\-–]49\s*キロ
+NUDR-0065,range,Entre 5 i 40 quilòmetres.,Entre 5–40 km.,5～40キロの間。,5[～~\-–]40\s*キロ
+NUDR-0066,date,Data: 2025-08-20.,Data: 20/08/2025.,日付：2025年8月20日。,2025年8月20日
+NUDR-0067,percent,Un 12% d'augment.,Un 12 % d'augment.,12％の増加。,12\s*％
+NUDR-0068,range,Entre 13 i 15 quilòmetres.,Entre 13–15 km.,13～15キロの間。,13[～~\-–]15\s*キロ
+NUDR-0069,range,Entre 7 i 30 quilòmetres.,Entre 7–30 km.,7～30キロの間。,7[～~\-–]30\s*キロ
+NUDR-0070,time,Horari: 10:00-20:00.,Horari: 10.00–20.00.,営業時間は10:00～20:00。,10:00[～~\-–]20:00
+NUDR-0071,range,Entre 10 i 29 quilòmetres.,Entre 10~29 km.,10～29キロの間。,10[～~\-–]29\s*キロ
+NUDR-0072,date,Data: 2025-08-01.,Data: 01/08/2025.,日付：2025年8月1日。,2025年8月1日
+NUDR-0073,currency,"Cost: 484,510 $.","Cost: $484,510.","費用は484,510ドル。","484,510\s*ドル"
+NUDR-0074,date,Data: 2024-12-08.,Data: 08/12/2024.,日付：2024年12月8日。,2024年12月8日
+NUDR-0075,range,Entre 37 i 38 quilòmetres.,Entre 37 a 38 km.,37～38キロの間。,37[～~\-–]38\s*キロ
+NUDR-0076,range,Entre 16 i 21 quilòmetres.,Entre 16–21 km.,16～21キロの間。,16[～~\-–]21\s*キロ
+NUDR-0077,time,Horari: 11:00-22:00.,Horari: 11.00–22.00.,営業時間は11:00～22:00。,11:00[～~\-–]22:00
+NUDR-0078,date,Data: 2025-03-11.,Data: 11/03/2025.,日付：2025年3月11日。,2025年3月11日
+NUDR-0079,percent,Un 12% d'augment.,Un 12 % d'augment.,12％の増加。,12\s*％
+NUDR-0080,time,Horari: 03:05-15:00.,Horari: 3.05–15.00.,営業時間は3:05～15:00。,3:05[～~\-–]15:00
+NUDR-0081,currency,Cost: 756.5 $.,Cost: $756・5.,費用は756.5ドル。,756\.5\s*ドル
+NUDR-0082,time,Horari: 01:00-11:00.,Horari: 1.00–11.00.,営業時間は1:00～11:00。,1:00[～~\-–]11:00
+NUDR-0083,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0084,time,Horari: 08:05-16:00.,Horari: 8.05–16.00.,営業時間は8:05～16:00。,8:05[～~\-–]16:00
+NUDR-0085,date,Data: 2025-06-24.,Data: 24/06/2025.,日付：2025年6月24日。,2025年6月24日
+NUDR-0086,time,Horari: 02:00-08:05.,Horari: 2.00–8.05.,営業時間は2:00～8:05。,2:00[～~\-–]8:05
+NUDR-0087,long_mixed,"Segons l'informe del 2024-06-09, el pressupost és de 415.25 €, i la distància prevista és entre 11 i 19 km; termini fins al 15/09/2024.","Informe 09/06/2024: €415.25, 11–19km; termini 2024-09-15.",2024年6月9日の報告書によれば、予算は415.25ユーロで、予定距離は11～19キロ、期限は2024年9月15日。,(?=.*415\.25\s*ユーロ)(?=.*11[～~\-–]19\s*キロ)(?=.*2024年9月15日)
+NUDR-0088,date,Data: 2025-05-17.,Data: 17/05/2025.,日付：2025年5月17日。,2025年5月17日
+NUDR-0089,time,Horari: 09:05-15:05.,Horari: 9.05–15.05.,営業時間は9:05～15:05。,9:05[～~\-–]15:05
+NUDR-0090,currency,Cost: 51.75 €.,Cost: €51.75.,費用は51.75ユーロ。,51\.75\s*ユーロ
+NUDR-0091,cardinal,El pressupost és de 191 €.,El pressupost és de €191.,予算は191ユーロです。,191\s*ユーロ
+NUDR-0092,date,Data: 2024-09-27.,Data: 27/09/2024.,日付：2024年9月27日。,2024年9月27日
+NUDR-0093,long_mixed,"Segons l'informe del 2024-08-06, el pressupost és de 40 €, i la distància prevista és entre 17 i 26 km; termini fins al 06/12/2024.","Informe 06/08/2024: €40, 17–26km; termini 2024-12-06.",2024年8月6日の報告書によれば、予算は40ユーロで、予定距離は17～26キロ、期限は2024年12月6日。,(?=.*40\s*ユーロ)(?=.*17[～~\-–]26\s*キロ)(?=.*2024年12月6日)
+NUDR-0094,time,Horari: 00:30-06:00.,Horari: 0.30–6.00.,営業時間は0:30～6:00。,0:30[～~\-–]6:00
+NUDR-0095,currency,"Cost: 9,742.5 ¥.",Cost: ¥9，742・5.,"費用は9,742.5円。","9,742\.5\s*円"
+NUDR-0096,date,Data: 2024-03-29.,Data: 29/03/2024.,日付：2024年3月29日。,2024年3月29日
+NUDR-0097,date,Data: 2024-02-23.,Data: 23/02/2024.,日付：2024年2月23日。,2024年2月23日
+NUDR-0098,cardinal,El pressupost és de 23 €.,El pressupost és de €23.,予算は23ユーロです。,23\s*ユーロ
+NUDR-0099,date,Data: 2025-10-04.,Data: 04/10/2025.,日付：2025年10月4日。,2025年10月4日
+NUDR-0100,time,Horari: 09:30-20:30.,Horari: 9.30–20.30.,営業時間は9:30～20:30。,9:30[～~\-–]20:30
+NUDR-0101,date,Data: 2024-02-11.,Data: 11/02/2024.,日付：2024年2月11日。,2024年2月11日
+NUDR-0102,cardinal,"El pressupost és de 7,647 €.",El pressupost és de €7・647.,"予算は7,647ユーロです。","7,647\s*ユーロ"
+NUDR-0103,date,Data: 2024-06-03.,Data: 03/06/2024.,日付：2024年6月3日。,2024年6月3日
+NUDR-0104,long_mixed,"Segons l'informe del 2024-06-02, el pressupost és de 49,442.5 €, i la distància prevista és entre 18 i 27 km; termini fins al 21/08/2024.","Informe 02/06/2024: €49.442.5, 18–27km; termini 2024-08-21.","2024年6月2日の報告書によれば、予算は49,442.5ユーロで、予定距離は18～27キロ、期限は2024年8月21日。","(?=.*49,442\.5\s*ユーロ)(?=.*18[～~\-–]27\s*キロ)(?=.*2024年8月21日)"
+NUDR-0105,range,Entre 13 i 29 quilòmetres.,Entre 13 a 29 km.,13～29キロの間。,13[～~\-–]29\s*キロ
+NUDR-0106,time,Horari: 02:05-12:30.,Horari: 2.05–12.30.,営業時間は2:05～12:30。,2:05[～~\-–]12:30
+NUDR-0107,time,Horari: 06:30-15:00.,Horari: 6.30–15.00.,営業時間は6:30～15:00。,6:30[～~\-–]15:00
+NUDR-0108,cardinal,El pressupost és de 71 €.,El pressupost és de €71.,予算は71ユーロです。,71\s*ユーロ
+NUDR-0109,cardinal,"El pressupost és de 239,380.25 €.",El pressupost és de €239，380．25.,"予算は239,380.25ユーロです。","239,380\.25\s*ユーロ"
+NUDR-0110,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0111,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0112,time,Horari: 08:00-20:30.,Horari: 8.00–20.30.,営業時間は8:00～20:30。,8:00[～~\-–]20:30
+NUDR-0113,range,Entre 42 i 56 quilòmetres.,Entre 42-56 km.,42～56キロの間。,42[～~\-–]56\s*キロ
+NUDR-0114,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0115,currency,Cost: 598.5 $.,Cost: $598・5.,費用は598.5ドル。,598\.5\s*ドル
+NUDR-0116,currency,"Cost: 571,216 €.",Cost: €571．216.,"費用は571,216ユーロ。","571,216\s*ユーロ"
+NUDR-0117,range,Entre 6 i 36 quilòmetres.,Entre 6 a 36 km.,6～36キロの間。,6[～~\-–]36\s*キロ
+NUDR-0118,range,Entre 3 i 50 quilòmetres.,Entre 3–50 km.,3～50キロの間。,3[～~\-–]50\s*キロ
+NUDR-0119,date,Data: 2024-05-31.,Data: 31/05/2024.,日付：2024年5月31日。,2024年5月31日
+NUDR-0120,time,Horari: 02:30-10:30.,Horari: 2.30–10.30.,営業時間は2:30～10:30。,2:30[～~\-–]10:30
+NUDR-0121,range,Entre 21 i 40 quilòmetres.,Entre 21–40 km.,21～40キロの間。,21[～~\-–]40\s*キロ
+NUDR-0122,date,Data: 2024-05-16.,Data: 16/05/2024.,日付：2024年5月16日。,2024年5月16日
+NUDR-0123,range,Entre 9 i 41 quilòmetres.,Entre 9–41 km.,9～41キロの間。,9[～~\-–]41\s*キロ
+NUDR-0124,currency,"Cost: 871,062 €.",Cost: €871・062.,"費用は871,062ユーロ。","871,062\s*ユーロ"
+NUDR-0125,time,Horari: 09:05-21:30.,Horari: 9.05–21.30.,営業時間は9:05～21:30。,9:05[～~\-–]21:30
+NUDR-0126,currency,"Cost: 79,109 €.",Cost: €79・109.,"費用は79,109ユーロ。","79,109\s*ユーロ"
+NUDR-0127,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0128,percent,Un 12% d'augment.,Un 12 % d'augment.,12％の増加。,12\s*％
+NUDR-0129,currency,"Cost: 49,340 $.","Cost: $49,340.","費用は49,340ドル。","49,340\s*ドル"
+NUDR-0130,time,Horari: 06:05-16:30.,Horari: 6.05–16.30.,営業時間は6:05～16:30。,6:05[～~\-–]16:30
+NUDR-0131,cardinal,"El pressupost és de 4,530.75 €.",El pressupost és de €4・530・75.,"予算は4,530.75ユーロです。","4,530\.75\s*ユーロ"
+NUDR-0132,long_mixed,"Segons l'informe del 2025-06-27, el pressupost és de 541 €, i la distància prevista és entre 10 i 19 km; termini fins al 28/08/2025.","Informe 27/06/2025: €541, 10–19km; termini 2025-08-28.",2025年6月27日の報告書によれば、予算は541ユーロで、予定距離は10～19キロ、期限は2025年8月28日。,(?=.*541\s*ユーロ)(?=.*10[～~\-–]19\s*キロ)(?=.*2025年8月28日)
+NUDR-0133,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0134,range,Entre 27 i 38 quilòmetres.,Entre 27-38 km.,27～38キロの間。,27[～~\-–]38\s*キロ
+NUDR-0135,date,Data: 2024-06-11.,Data: 11/06/2024.,日付：2024年6月11日。,2024年6月11日
+NUDR-0136,cardinal,El pressupost és de 150.25 €.,El pressupost és de €150.25.,予算は150.25ユーロです。,150\.25\s*ユーロ
+NUDR-0137,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0138,cardinal,"El pressupost és de 262,561.25 €.",El pressupost és de €262，561.25.,"予算は262,561.25ユーロです。","262,561\.25\s*ユーロ"
+NUDR-0139,currency,Cost: 193 ¥.,Cost: ¥193.,費用は193円。,193\s*円
+NUDR-0140,time,Horari: 03:05-11:30.,Horari: 3.05–11.30.,営業時間は3:05～11:30。,3:05[～~\-–]11:30
+NUDR-0141,percent,Un 12% d'augment.,Un 12 % d'augment.,12％の増加。,12\s*％
+NUDR-0142,date,Data: 2024-10-13.,Data: 13/10/2024.,日付：2024年10月13日。,2024年10月13日
+NUDR-0143,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0144,long_mixed,"Segons l'informe del 2025-10-29, el pressupost és de 30.5 €, i la distància prevista és entre 18 i 34 km; termini fins al 16/12/2025.","Informe 29/10/2025: €30．5, 18–34km; termini 2025-12-16.",2025年10月29日の報告書によれば、予算は30.5ユーロで、予定距離は18～34キロ、期限は2025年12月16日。,(?=.*30\.5\s*ユーロ)(?=.*18[～~\-–]34\s*キロ)(?=.*2025年12月16日)
+NUDR-0145,date,Data: 2024-04-12.,Data: 12/04/2024.,日付：2024年4月12日。,2024年4月12日
+NUDR-0146,cardinal,"El pressupost és de 88,482.75 €.",El pressupost és de €88，482．75.,"予算は88,482.75ユーロです。","88,482\.75\s*ユーロ"
+NUDR-0147,time,Horari: 11:05-18:05.,Horari: 11.05–18.05.,営業時間は11:05～18:05。,11:05[～~\-–]18:05
+NUDR-0148,date,Data: 2025-01-07.,Data: 07/01/2025.,日付：2025年1月7日。,2025年1月7日
+NUDR-0149,cardinal,"El pressupost és de 21,566 €.",El pressupost és de €21・566.,"予算は21,566ユーロです。","21,566\s*ユーロ"
+NUDR-0150,cardinal,El pressupost és de 823.75 €.,El pressupost és de €823.75.,予算は823.75ユーロです。,823\.75\s*ユーロ
+NUDR-0151,date,Data: 2024-06-03.,Data: 03/06/2024.,日付：2024年6月3日。,2024年6月3日
+NUDR-0152,time,Horari: 00:05-08:05.,Horari: 0.05–8.05.,営業時間は0:05～8:05。,0:05[～~\-–]8:05
+NUDR-0153,long_mixed,"Segons l'informe del 2024-12-23, el pressupost és de 209.5 €, i la distància prevista és entre 15 i 28 km; termini fins al 12/06/2025.","Informe 23/12/2024: €209.5, 15–28km; termini 2025-06-12.",2024年12月23日の報告書によれば、予算は209.5ユーロで、予定距離は15～28キロ、期限は2025年6月12日。,(?=.*209\.5\s*ユーロ)(?=.*15[～~\-–]28\s*キロ)(?=.*2025年6月12日)
+NUDR-0154,long_mixed,"Segons l'informe del 2025-09-05, el pressupost és de 26,146 €, i la distància prevista és entre 16 i 27 km; termini fins al 24/10/2025.","Informe 05/09/2025: €26，146, 16–27km; termini 2025-10-24.","2025年9月5日の報告書によれば、予算は26,146ユーロで、予定距離は16～27キロ、期限は2025年10月24日。","(?=.*26,146\s*ユーロ)(?=.*16[～~\-–]27\s*キロ)(?=.*2025年10月24日)"
+NUDR-0155,long_mixed,"Segons l'informe del 2024-01-21, el pressupost és de 61,613.25 €, i la distància prevista és entre 19 i 22 km; termini fins al 20/02/2024.","Informe 21/01/2024: €61，613.25, 19–22km; termini 2024-02-20.","2024年1月21日の報告書によれば、予算は61,613.25ユーロで、予定距離は19～22キロ、期限は2024年2月20日。","(?=.*61,613\.25\s*ユーロ)(?=.*19[～~\-–]22\s*キロ)(?=.*2024年2月20日)"
+NUDR-0156,time,Horari: 09:30-15:05.,Horari: 9.30–15.05.,営業時間は9:30～15:05。,9:30[～~\-–]15:05
+NUDR-0157,time,Horari: 08:30-19:05.,Horari: 8.30–19.05.,営業時間は8:30～19:05。,8:30[～~\-–]19:05
+NUDR-0158,percent,Un 7.25% d'augment.,Un 7.25 % d'augment.,7.25％の増加。,7\.25\s*％
+NUDR-0159,cardinal,El pressupost és de 127.25 €.,El pressupost és de €127・25.,予算は127.25ユーロです。,127\.25\s*ユーロ
+NUDR-0160,date,Data: 2025-03-10.,Data: 10/03/2025.,日付：2025年3月10日。,2025年3月10日
+NUDR-0161,cardinal,El pressupost és de 857 €.,El pressupost és de €857.,予算は857ユーロです。,857\s*ユーロ
+NUDR-0162,range,Entre 16 i 52 quilòmetres.,Entre 16 a 52 km.,16～52キロの間。,16[～~\-–]52\s*キロ
+NUDR-0163,long_mixed,"Segons l'informe del 2025-08-04, el pressupost és de 17,464.5 €, i la distància prevista és entre 31 i 33 km; termini fins al 01/10/2025.","Informe 04/08/2025: €17，464・5, 31–33km; termini 2025-10-01.","2025年8月4日の報告書によれば、予算は17,464.5ユーロで、予定距離は31～33キロ、期限は2025年10月1日。","(?=.*17,464\.5\s*ユーロ)(?=.*31[～~\-–]33\s*キロ)(?=.*2025年10月1日)"
+NUDR-0164,range,Entre 5 i 47 quilòmetres.,Entre 5–47 km.,5～47キロの間。,5[～~\-–]47\s*キロ
+NUDR-0165,time,Horari: 11:30-21:05.,Horari: 11.30–21.05.,営業時間は11:30～21:05。,11:30[～~\-–]21:05
+NUDR-0166,time,Horari: 02:05-08:05.,Horari: 2.05–8.05.,営業時間は2:05～8:05。,2:05[～~\-–]8:05
+NUDR-0167,time,Horari: 10:05-16:30.,Horari: 10.05–16.30.,営業時間は10:05～16:30。,10:05[～~\-–]16:30
+NUDR-0168,currency,Cost: 72 €.,Cost: €72.,費用は72ユーロ。,72\s*ユーロ
+NUDR-0169,cardinal,"El pressupost és de 83,417 €.",El pressupost és de €83・417.,"予算は83,417ユーロです。","83,417\s*ユーロ"
+NUDR-0170,cardinal,El pressupost és de 35.25 €.,El pressupost és de €35.25.,予算は35.25ユーロです。,35\.25\s*ユーロ
+NUDR-0171,range,Entre 53 i 55 quilòmetres.,Entre 53–55 km.,53～55キロの間。,53[～~\-–]55\s*キロ
+NUDR-0172,range,Entre 7 i 21 quilòmetres.,Entre 7-21 km.,7～21キロの間。,7[～~\-–]21\s*キロ
+NUDR-0173,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0174,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0175,currency,"Cost: 25,261.75 €.","Cost: €25,261・75.","費用は25,261.75ユーロ。","25,261\.75\s*ユーロ"
+NUDR-0176,currency,"Cost: 159,332 €.",Cost: €159．332.,"費用は159,332ユーロ。","159,332\s*ユーロ"
+NUDR-0177,range,Entre 46 i 54 quilòmetres.,Entre 46~54 km.,46～54キロの間。,46[～~\-–]54\s*キロ
+NUDR-0178,range,Entre 41 i 43 quilòmetres.,Entre 41-43 km.,41～43キロの間。,41[～~\-–]43\s*キロ
+NUDR-0179,range,Entre 36 i 40 quilòmetres.,Entre 36–40 km.,36～40キロの間。,36[～~\-–]40\s*キロ
+NUDR-0180,currency,Cost: 509 ¥.,Cost: ¥509.,費用は509円。,509\s*円
+NUDR-0181,date,Data: 2025-04-07.,Data: 07/04/2025.,日付：2025年4月7日。,2025年4月7日
+NUDR-0182,long_mixed,"Segons l'informe del 2024-01-07, el pressupost és de 66 €, i la distància prevista és entre 31 i 32 km; termini fins al 04/03/2024.","Informe 07/01/2024: €66, 31–32km; termini 2024-03-04.",2024年1月7日の報告書によれば、予算は66ユーロで、予定距離は31～32キロ、期限は2024年3月4日。,(?=.*66\s*ユーロ)(?=.*31[～~\-–]32\s*キロ)(?=.*2024年3月4日)
+NUDR-0183,percent,Un 5.5% d'augment.,Un 5.5 % d'augment.,5.5％の増加。,5\.5\s*％
+NUDR-0184,currency,"Cost: 945,976 ¥.","Cost: ¥945,976.","費用は945,976円。","945,976\s*円"
+NUDR-0185,long_mixed,"Segons l'informe del 2025-08-17, el pressupost és de 532.25 €, i la distància prevista és entre 10 i 32 km; termini fins al 07/12/2025.","Informe 17/08/2025: €532.25, 10–32km; termini 2025-12-07.",2025年8月17日の報告書によれば、予算は532.25ユーロで、予定距離は10～32キロ、期限は2025年12月7日。,(?=.*532\.25\s*ユーロ)(?=.*10[～~\-–]32\s*キロ)(?=.*2025年12月7日)
+NUDR-0186,range,Entre 24 i 59 quilòmetres.,Entre 24 a 59 km.,24～59キロの間。,24[～~\-–]59\s*キロ
+NUDR-0187,cardinal,El pressupost és de 24 €.,El pressupost és de €24.,予算は24ユーロです。,24\s*ユーロ
+NUDR-0188,long_mixed,"Segons l'informe del 2025-11-11, el pressupost és de 864 €, i la distància prevista és entre 24 i 28 km; termini fins al 17/04/2026.","Informe 11/11/2025: €864, 24–28km; termini 2026-04-17.",2025年11月11日の報告書によれば、予算は864ユーロで、予定距離は24～28キロ、期限は2026年4月17日。,(?=.*864\s*ユーロ)(?=.*24[～~\-–]28\s*キロ)(?=.*2026年4月17日)
+NUDR-0189,time,Horari: 11:00-21:05.,Horari: 11.00–21.05.,営業時間は11:00～21:05。,11:00[～~\-–]21:05
+NUDR-0190,currency,"Cost: 63,633 €.","Cost: €63,633.","費用は63,633ユーロ。","63,633\s*ユーロ"
+NUDR-0191,range,Entre 10 i 12 quilòmetres.,Entre 10-12 km.,10～12キロの間。,10[～~\-–]12\s*キロ
+NUDR-0192,cardinal,"El pressupost és de 406,481 €.",El pressupost és de €406．481.,"予算は406,481ユーロです。","406,481\s*ユーロ"
+NUDR-0193,long_mixed,"Segons l'informe del 2025-11-15, el pressupost és de 35,877 €, i la distància prevista és entre 13 i 28 km; termini fins al 11/04/2026.","Informe 15/11/2025: €35・877, 13–28km; termini 2026-04-11.","2025年11月15日の報告書によれば、予算は35,877ユーロで、予定距離は13～28キロ、期限は2026年4月11日。","(?=.*35,877\s*ユーロ)(?=.*13[～~\-–]28\s*キロ)(?=.*2026年4月11日)"
+NUDR-0194,cardinal,"El pressupost és de 8,392 €.",El pressupost és de €8.392.,"予算は8,392ユーロです。","8,392\s*ユーロ"
+NUDR-0195,percent,Un 12% d'augment.,Un 12 % d'augment.,12％の増加。,12\s*％
+NUDR-0196,currency,"Cost: 420,617.5 $.",Cost: $420，617．5.,"費用は420,617.5ドル。","420,617\.5\s*ドル"
+NUDR-0197,percent,Un 12% d'augment.,Un 12 % d'augment.,12％の増加。,12\s*％
+NUDR-0198,cardinal,"El pressupost és de 12,716 €.",El pressupost és de €12，716.,"予算は12,716ユーロです。","12,716\s*ユーロ"
+NUDR-0199,cardinal,"El pressupost és de 10,115 €.","El pressupost és de €10,115.","予算は10,115ユーロです。","10,115\s*ユーロ"
+NUDR-0200,time,Horari: 05:00-12:05.,Horari: 5.00–12.05.,営業時間は5:00～12:05。,5:00[～~\-–]12:05
+
