@@ -1,0 +1,11 @@
+fast-unidecode==1.0.2
+fasttext==0.9.3
+huggingface-hub==0.35.3
+joblib==1.5.2
+numpy>=1.24,<2
+pandas==2.3.3
+PyYAML==6.0.3
+sentence-transformers==5.1.1
+torch==2.8.0
+tqdm==4.67.1
+xxhash==3.6.0
