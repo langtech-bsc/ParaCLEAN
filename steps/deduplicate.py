@@ -3,7 +3,10 @@ import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import tempfile
 import subprocess
-from fast_unidecode import unidecode
+try:
+    from fast_unidecode import unidecode
+except ImportError:
+    from unidecode import unidecode
 import xxhash
 
 # Aggressive normalization for deduplication
@@ -36,7 +39,9 @@ def deduplicate_tsv(tsv_path: str, out_path: str):
     with tempfile.NamedTemporaryFile(mode="w", delete=False, dir=tmpdir, encoding="utf-8") as tmp:
         tmp_name = tmp.name
         with open(tsv_path, "r", encoding="utf-8") as f_in:
-            header = next(f_in)  # preserve header
+            header = f_in.readline()
+            if not header:
+                header = "l1\tl2\n"
             for line_number, line in enumerate(f_in, start=2):
                 line = line.rstrip("\r\n")
                 parts = line.split("\t")

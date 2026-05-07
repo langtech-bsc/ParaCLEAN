@@ -9,6 +9,7 @@ vecalign/
 tmp/
 slurm_logs
 testing
+tests/test_broad_alias_langid.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

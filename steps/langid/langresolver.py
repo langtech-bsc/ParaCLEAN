@@ -14,7 +14,8 @@ class LangResolver:
         self.aliases = {}
         if aliases_path:
             with open(aliases_path, encoding="utf-8") as f:
-                self.aliases = json.load(f)
+                aliases = json.load(f)
+                self.aliases = {k.lower(): self._normalise_alias_targets(v) for k, v in aliases.items()}
 
     def resolve(self, inp, prefer_script=None, expand=False):
         if inp is None:
@@ -38,6 +39,21 @@ class LangResolver:
             return self._pick_script(self.by_name[s], prefer_script)
 
         raise ValueError(f"Unrecognised language: {inp}")
+
+    def _normalise_alias_targets(self, targets):
+        if isinstance(targets, str):
+            targets = [targets]
+        return [self._normalise_alias_target(target) for target in targets]
+
+    def _normalise_alias_target(self, target):
+        target_key = target.lower()
+        if target_key in self.by_glotlid:
+            return self.by_glotlid[target_key]["glotlid"]
+        if target_key in self.by_iso3:
+            return self._pick_script(self.by_iso3[target_key], None)
+        if target_key in self.by_iso1:
+            return self._pick_script(self.by_iso1[target_key], None)
+        return target
 
     def _pick_script(self, entry, prefer_script):
         iso3 = entry["iso639_3"].lower()

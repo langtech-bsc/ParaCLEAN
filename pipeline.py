@@ -23,25 +23,32 @@ def run_pipeline_from_config(config, resolver=None):
 	Handles both single-corpus and multi-corpus modes.
 	"""
 	if resolver:
-		def _resolve_field(val):
+		def _resolve_field(val, expand=False):
 			if not val:
 				return None
 			try:
-				# resolve to a single GlotLID code (no expansion)
-				return resolver.resolve(val, expand=False)
+				return resolver.resolve(val, expand=expand)
 			except Exception as e:
 				raise ValueError(f"Failed to resolve language '{val}': {e}")
 
 		# Resolve global languages
-		config["l1"] = _resolve_field(config.get("l1"))
-		config["l2"] = _resolve_field(config.get("l2"))
+		raw_l1 = config.get("l1")
+		raw_l2 = config.get("l2")
+		config["l1"] = _resolve_field(raw_l1)
+		config["l2"] = _resolve_field(raw_l2)
+		config["langid_l1_targets"] = _resolve_field(raw_l1, expand=True)
+		config["langid_l2_targets"] = _resolve_field(raw_l2, expand=True)
 
 		# Resolve per-input override languages if present
 		for inp in config.get("inputs", []):
-			if inp.get("l1"):
-				inp["l1"] = _resolve_field(inp.get("l1"))
-			if inp.get("l2"):
-				inp["l2"] = _resolve_field(inp.get("l2"))
+			raw_inp_l1 = inp.get("l1")
+			raw_inp_l2 = inp.get("l2")
+			if raw_inp_l1:
+				inp["l1"] = _resolve_field(raw_inp_l1)
+				inp["langid_l1_targets"] = _resolve_field(raw_inp_l1, expand=True)
+			if raw_inp_l2:
+				inp["l2"] = _resolve_field(raw_inp_l2)
+				inp["langid_l2_targets"] = _resolve_field(raw_inp_l2, expand=True)
 
 	if not config.get("inputs"):
 		return run_single_corpus(config)
@@ -64,7 +71,10 @@ def run_single_corpus(config):
 		model=config.get("model", "labse"),
 		model_path=config.get("model_path"),
 		start_from=config.get("start_from"),
-		bifixer_flags=config.get("bifixer_flags", None)
+		bifixer_flags=config.get("bifixer_flags", None),
+		glotlid_cache_dir=config.get("glotlid_cache_dir"),
+		langid_l1_targets=config.get("langid_l1_targets"),
+		langid_l2_targets=config.get("langid_l2_targets")
 	)
 
 
@@ -96,7 +106,10 @@ def run_multi_corpus(config):
 		langid_l2=config.get("langid_l2_prob"),
 		model=config.get("model", "labse"),
 		model_path=config.get("model_path"),
-		bifixer_flags=config.get("bifixer_flags", None)
+		bifixer_flags=config.get("bifixer_flags", None),
+		glotlid_cache_dir=config.get("glotlid_cache_dir"),
+		langid_l1_targets=config.get("langid_l1_targets"),
+		langid_l2_targets=config.get("langid_l2_targets")
 	)
 
 
@@ -123,7 +136,10 @@ def run_single_input(inp, config, out_dir):
 		model=config.get("model", "labse"),
 		model_path=config.get("model_path"),
 		start_from=inp.get("start_from"),
-		bifixer_flags=config.get("bifixer_flags", None)
+		bifixer_flags=config.get("bifixer_flags", None),
+		glotlid_cache_dir=config.get("glotlid_cache_dir"),
+		langid_l1_targets=inp.get("langid_l1_targets", config.get("langid_l1_targets")),
+		langid_l2_targets=inp.get("langid_l2_targets", config.get("langid_l2_targets"))
 	)
 
 
@@ -146,7 +162,8 @@ def merge_inputs(intermediate_paths, out_dir):
 def run_pipeline(input_path, output_path, steps, l1, l2, format,
 				 filter_config=None, model="labse", model_path=None,
 				 alignment=None, langid_l1=None, langid_l2=None,
-				 start_from=None, bifixer_flags=None):
+				 start_from=None, bifixer_flags=None, glotlid_cache_dir=None,
+				 langid_l1_targets=None, langid_l2_targets=None):
 	"""
 	Run the full pipeline or selected steps.
 	bifixer_flags: optional list of strings with flags for Bifixer step
@@ -160,7 +177,10 @@ def run_pipeline(input_path, output_path, steps, l1, l2, format,
 			current, p + ".embeddings.tsv",
 			model=embeddings.load_embedding_model(model, model_path),
 			l1=l1, l2=l2),
-		"langid": lambda p: langid.score(current, p + ".langid.tsv", l1, l2),
+		"langid": lambda p: langid.score(
+			current, p + ".langid.tsv", l1, l2, cache_dir=glotlid_cache_dir,
+			langid_l1_targets=langid_l1_targets,
+			langid_l2_targets=langid_l2_targets),
 		"filter": lambda p: filtering.apply_filters(
 			current, p + ".filtered.tsv", alignment, langid_l1, langid_l2),
 		"dedup": lambda p: deduplicate.deduplicate_tsv(current, p + ".deduped.tsv"),

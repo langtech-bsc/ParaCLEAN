@@ -39,6 +39,11 @@ def apply_normalisation(input_path, output_path, l1, l2, with_header=True):
                 continue
 
             l1_sent, l2_sent = parts[0], parts[1]
+            if line_number == 1 and (
+                (l1_sent in {"l1", "source"} and l2_sent in {"l2", "target"})
+                or (l1_sent == l1 and l2_sent == l2)
+            ):
+                continue
             norm_l1 = l1_norm(l1_sent, source=l2_sent)
             norm_l2 = l2_norm(l2_sent, source=l1_sent)
 

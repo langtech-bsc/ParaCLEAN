@@ -2,11 +2,23 @@
 import csv
 import json
 
+def _raise_csv_field_limit():
+    max_int = 2 ** 63 - 1
+    while True:
+        try:
+            csv.field_size_limit(max_int)
+            return
+        except OverflowError:
+            max_int //= 10
+
+
 def apply_filters(input_path, output_path, alignment_thresh, langid_l1_thresh, langid_l2_thresh):
     """
     Stream TSV file, apply filters, and write passing rows to output.
     Only considers first two columns for language/text filters; can be extended.
     """
+
+    _raise_csv_field_limit()
 
     with open(input_path, "r", encoding="utf-8") as infile, \
          open(output_path, "w", encoding="utf-8") as outfile:
@@ -16,6 +28,7 @@ def apply_filters(input_path, output_path, alignment_thresh, langid_l1_thresh, l
 
         # Write header
         header = next(reader)
+        writer.writerow(header[:2])
 
         for line_number, row in enumerate(reader, start=2):
             try:
