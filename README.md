@@ -40,7 +40,7 @@ Clone the repository and set up a virtual environment:
 
 ```bash
 git clone https://github.com/langtech-bsc/ParaCLEAN
-cd ParaClean
+cd ParaCLEAN
 python -m venv venv
 source venv/bin/activate   # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
