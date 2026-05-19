@@ -213,7 +213,14 @@ For details, please see the license tab [here](https://github.com/langtech-bsc/P
 
 ## Citation
 
-Citation information will be added here once the associated publication is available.
+> **Note:** This citation will be updated with page numbers and a DOI once available.
+
+```
+Mash, A., Bohman, E. P., & Melero, M. (2026). ParaCLEAN: Improving Translation Quality
+through Systematic Parallel Data Cleaning. In *Proceedings of the 15th Language Resources
+and Evaluation Conference (LREC 2026)*, Palma de Mallorca, Spain. European Language
+Resources Association (ELRA).
+```
 
 ## Acknowledgements
 
