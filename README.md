@@ -1,3 +1,5 @@
+[![LREC](https://img.shields.io/badge/LREC-2026-1a9c9c)](https://lrec.elra.info/lrec2026-main-527)
+
 # Translation Data Processing Pipeline
 
 ## Overview
@@ -213,14 +215,37 @@ For details, please see the license tab [here](https://github.com/langtech-bsc/P
 
 ## Citation
 
-> **Note:** This citation will be updated with page numbers and a DOI once available.
+> **Note:** The ACL Anthology entry is forthcoming. In the meantime, please cite via the LREC proceedings.
 
 ```
 Mash, A., Bohman, E. P., & Melero, M. (2026). ParaCLEAN: Improving Translation Quality
-through Systematic Parallel Data Cleaning. In *Proceedings of the 15th Language Resources
-and Evaluation Conference (LREC 2026)*, Palma de Mallorca, Spain. European Language
-Resources Association (ELRA).
+through Systematic Parallel Data Cleaning. In Proceedings of the Fifteenth Language
+Resources and Evaluation Conference (LREC 2026), pp. 6630–6640, Palma, Mallorca, Spain.
+European Language Resources Association (ELRA).
+https://doi.org/10.63317/36e3vfurjna4
 ```
+
+<details>
+<summary>BibTeX</summary>
+
+```bibtex
+@inproceedings{mash-etal-2026-paraclean,
+    title     = "{P}ara{CLEAN}: Improving Translation Quality through Systematic Parallel Data Cleaning",
+    author    = "Mash, Audrey and Bohman, Ella Paulina and Melero, Maite",
+    booktitle = "Proceedings of the Fifteenth Language Resources and Evaluation Conference",
+    pages     = "6630--6640",
+    month     = may,
+    year      = "2026",
+    address   = "Palma, Mallorca, Spain",
+    publisher = "European Language Resources Association",
+    url       = "https://lrec.elra.info/lrec2026-main-527",
+    doi       = "10.63317/36e3vfurjna4",
+    issn      = "2522-2686",
+    isbn      = "978-2-493814-49-4",
+}
+```
+
+</details>
 
 ## Acknowledgements
 
