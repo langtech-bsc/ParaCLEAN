@@ -258,4 +258,4 @@ This project builds upon components and concepts from:
 - [Bifixer](https://github.com/bitextor/bifixer)
 - [LaBSE](https://huggingface.co/sentence-transformers/LaBSE)
 - [SONAR](https://github.com/facebookresearch/SONAR)
-- [GlotLID](https://github.com/cisnlp/GlotLID)
+- [GlotLID](https://github.com/cisnlp/GlotLID) - Licensed under Apache 2.0 with notices (see third_party_licenses/GlotLID_LICENSE)
