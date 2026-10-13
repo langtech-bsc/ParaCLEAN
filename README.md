@@ -249,6 +249,8 @@ https://doi.org/10.63317/36e3vfurjna4
 
 ## Acknowledgements
 
+This work was supported by the Generalitat de Catalunya (Aina project). Reference: SDD001/22/000005. Project(s): PN040300.
+
 This work is funded by the Ministerio para la Transformación Digital y de la Función Pública - Funded by EU – NextGenerationEU within the framework of the project Desarrollo de Modelos ALIA. 
 
 ## Related Resources
