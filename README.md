@@ -215,33 +215,35 @@ For details, please see the license tab [here](https://github.com/langtech-bsc/P
 
 ## Citation
 
-> **Note:** The ACL Anthology entry is forthcoming. In the meantime, please cite via the LREC proceedings.
-
-```
-Mash, A., Bohman, E. P., & Melero, M. (2026). ParaCLEAN: Improving Translation Quality
-through Systematic Parallel Data Cleaning. In Proceedings of the Fifteenth Language
-Resources and Evaluation Conference (LREC 2026), pp. 6630–6640, Palma, Mallorca, Spain.
-European Language Resources Association (ELRA).
-https://doi.org/10.63317/36e3vfurjna4
-```
+Audrey Mash, Ella Paulina Bohman, and Maite Melero. 2026. [ParaCLEAN: Improving Translation Quality 
+through Systematic Parallel Data Cleaning](https://aclanthology.org/2026.lrec-1.527/). In Proceedings 
+of the Fifteenth Language Resources and Evaluation Conference, pages 6630–6640, Palma de Mallorca, Spain. 
+ELRA Language Resource Association.
 
 <details>
 <summary>BibTeX</summary>
 
 ```bibtex
 @inproceedings{mash-etal-2026-paraclean,
-    title     = "{P}ara{CLEAN}: Improving Translation Quality through Systematic Parallel Data Cleaning",
-    author    = "Mash, Audrey and Bohman, Ella Paulina and Melero, Maite",
+    title = "{P}ara{CLEAN}: Improving Translation Quality through Systematic Parallel Data Cleaning",
+    author = "Mash, Audrey  and
+      Bohman, Ella Paulina  and
+      Melero, Maite",
+    editor = "Piperidis, Stelios  and
+      Bel, N{\'u}ria  and
+      van den Heuvel, Henk  and
+      Ide, Nancy  and
+      Krek, Simon  and
+      Toral, Antonio",
     booktitle = "Proceedings of the Fifteenth Language Resources and Evaluation Conference",
-    pages     = "6630--6640",
-    month     = may,
-    year      = "2026",
-    address   = "Palma, Mallorca, Spain",
-    publisher = "European Language Resources Association",
-    url       = "https://lrec.elra.info/lrec2026-main-527",
-    doi       = "10.63317/36e3vfurjna4",
-    issn      = "2522-2686",
-    isbn      = "978-2-493814-49-4",
+    month = may,
+    year = "2026",
+    address = "Palma de Mallorca, Spain",
+    publisher = "ELRA Language Resource Association",
+    url = "https://aclanthology.org/2026.lrec-1.527/",
+    doi = "10.63317/36e3vfurjna4",
+    pages = "6630--6640",
+    abstract = "Parallel corpora often contain significant noise, particularly in low-resource settings where both collected and synthetic data are combined. We present ParaCLEAN, a modular pipeline for cleaning parallel data that integrates embeddings-based filtering, language identification, deduplication, and normalisation. Experiments on Catalan to Japanese translation demonstrate that ParaCLEAN improves data quality and downstream MT performance. Ablation studies highlight the contribution of each step. ParaCLEAN is lightweight, reproducible, and extensible for diverse language pairs."
 }
 ```
 
